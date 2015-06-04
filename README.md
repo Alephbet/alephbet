@@ -176,6 +176,15 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
 
 To set more verbose logging to the browser console, use `AlephBet.options.debug = true`.
 
+## Analyzing results
+
+AlephBet is built for developers, so there's no fancy interface or WYSIWYG editors. The best way to analyze the results
+and determine the best variant from an experiment is to look at the raw data and calculate the statistical significance.
+A couple of recommended resources:
+
+* [Thumbtack's ABBA A/B Test Calculator](https://www.thumbtack.com/labs/abba/)
+* [Evan Miller's A/B Testing tools](http://www.evanmiller.org/ab-testing/)
+
 ## Development
 
 AlephBet uses npm / browserify with the following 3rd party libraries:
