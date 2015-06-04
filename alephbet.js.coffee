@@ -12,11 +12,11 @@ class AlephBet
       throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
       ga('send', 'event', category, action, label, value)
 
-    @onInitialize: (test_name, variant) =>
-      @_track(@namespace, test_name, "#{variant} | Visitors")
+    @onInitialize: (experiment_name, variant) =>
+      @_track(@namespace, experiment_name, "#{variant} | Visitors")
 
-    @onEvent: (test_name, variant, event_name) =>
-      @_track(@namespace, test_name, "#{variant} | #{event_name}")
+    @onEvent: (experiment_name, variant, event_name) =>
+      @_track(@namespace, experiment_name, "#{variant} | #{event_name}")
 
   class @Experiment
     @_options:
