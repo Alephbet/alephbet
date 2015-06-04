@@ -172,6 +172,22 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
 
 ```
 
+### Debug mode
+
+To set more verbose logging to the browser console, use `AlephBet.options.debug = true`.
+
+## Development
+
+AlephBet uses npm / browserify with the following 3rd party libraries:
+
+* [lodash](https://lodash.com/) (using a custom build, to save space)
+* [store.js](https://github.com/marcuswestin/store.js) - for localStorage
+
+### Commands
+
+* `npm run build` - to build both development and minified version + prerequisites
+* `npm run watch` - will watch files and re-build using `watchify`
+
 ## License
 
 AlephBet is distributed under the MIT license. All 3rd party libraries and components are distributed under their
