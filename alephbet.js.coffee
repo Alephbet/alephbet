@@ -54,7 +54,7 @@ class AlephBet
         @options.tracking_adapter.onInitialize(@options.name, variant)
       @options.variants[variant]?.activate()
 
-    goal: (goal_name, unique=true) ->
+    goal_complete: (goal_name, unique=true) ->
       return if unique && storage.get("#{@options.name}:#{goal_name}")
       variant = @get_stored_variant()
       return unless variant
@@ -76,10 +76,24 @@ class AlephBet
       return active unless typeof active is 'undefined'
       storage.set("#{@options.name}:in_sample", Math.random() <= @options.sample)
 
+    add_goal: (goal) =>
+      goal.add_experiment(this)
+
     _validate = ->
       throw 'an experiment name must be specified' if @options.name is null
       throw 'variants must be provided' if @options.variants is null
       throw 'trigger must be a function' if typeof @options.trigger isnt 'function'
+
+  class @Goal
+    constructor: (@name, @unique=true) ->
+
+    add_experiment: (experiment) ->
+      @experiments ||= []
+      @experiments.push(experiment)
+
+    complete: ->
+      for experiment in @experiments
+        experiment.goal_complete(@name, @unique)
 
 log = (message) ->
   utils.set_debug(AlephBet.options.debug)

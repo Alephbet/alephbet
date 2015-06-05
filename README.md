@@ -50,14 +50,21 @@ var button_color_experiment = new AlephBet.Experiment({
 * Track goals for your experiment:
 
 ```javascript
-// tracking unique goal actions
+// creating a goal
+var button_clicked_goal = new AlephBet.Goal('button clicked');
 $('#my-btn').on('click', function() {
   // The chosen variant will be tied to the goal automatically
-  button_color_experiment.goal('button clicked');
+  button_clicked_goal.complete();
 });
 
+// adding experiment to the goal
+button_clicked_goal.add_experiment(button_color_experiment);
+
+// alternatively - add the goal to the experiment
+button_color_experiment.add_goal(button_clicked_goal);
+
 // tracking non-unique goals, e.g. page views
-button_color_experiment.goal('viewed page', false);  // setting unique to false
+var page_views = new AlephBet.Goal('page view', false);  // setting unique to false
 ```
 
 * view results on your Google Analytics Event Tracking Section. Visitors + Goals will be assigned to `actions`. e.g.
@@ -115,7 +122,7 @@ experiments under specific conditions for the same visitor.
 
 Goals are uniquely tracked by default. i.e. if a goal is set to measure how many visitors clicked on a button, multiple
 clicks won't generate another goal completion. Only one per visitor. Non-unique goals can be set by passing a second
-parameter (`false`) to the goal method.
+parameter (`false`) to the goal when creating it.
 
 Goals will only be tracked if the experiment was launched and a variant selected before. Tracking goals is therefore
 safe and idempotent (unless unique is false).
@@ -123,19 +130,28 @@ safe and idempotent (unless unique is false).
 Here's a short sample of tracking multiple goals over multiple experiments:
 
 ```javascript
-
-var button_color_experiment = new AlephBet.Experiment({ /* ... */ });
-var buy_button_cta_experiment = new AlephBet.Experiment({ /* ... */ });
-var experiments = [button_color_experiment, buy_button_cta_experiment];
-
 // main goal - button click
+var button_click_goal = new AlephBet.Goal('button click');
 $('#my-btn').on('click', function() {
-  _(experiments).each(function (ex) { ex.goal('button clicked'); });
+  button_clicked_goal.complete();
 });
 
 // engagement - any click on the page
+var engagement = new AlephBet.Goal('engagement');
 $('html').on('click', function() {
-  _(experiments).each(function (ex) { ex.goal('engagement'); });
+  engagement.complete();
+});
+
+var all_goals = [button_click_goal, engagement];
+
+// experiments
+var button_color_experiment = new AlephBet.Experiment({ /* ... */ });
+var buy_button_cta_experiment = new AlephBet.Experiment({ /* ... */ });
+
+// adding all goals to experiments
+_(all_goals).each(function (goal) {
+  button_color_experiment.add_goal(goal);
+  buy_button_cta_experiment.add_goal(goal);
 });
 ```
 
