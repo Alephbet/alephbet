@@ -191,6 +191,12 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
 
 To set more verbose logging to the browser console, use `AlephBet.options.debug = true`.
 
+### Other install options
+
+* download `alephbet.min.js` from the `dist` folder on github
+* `npm install alephbet`
+* `bower install alephbet`
+
 ## Analyzing results
 
 AlephBet is built for developers, so there's no fancy interface or WYSIWYG editors. The best way to analyze the results
