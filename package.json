@@ -27,5 +27,22 @@
     "build-min": "browserify alephbet.js.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
     "build": "npm run lodash-custom && npm run build-debug && npm run build-min",
     "watch": "watchify alephbet.js.coffee -d --standalone AlephBet -o dist/alephbet.js -v"
-  }
+  },
+  "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
+  "main": "dist/alephbet.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gingerlime/alephbet.git"
+  },
+  "keywords": [
+    "A/B Testing",
+    "Multivariate",
+    "Browser",
+    "Browserify"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gingerlime/alephbet/issues"
+  },
+  "homepage": "https://github.com/gingerlime/alephbet"
 }
