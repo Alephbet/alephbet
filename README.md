@@ -64,7 +64,7 @@ button_clicked_goal.add_experiment(button_color_experiment);
 button_color_experiment.add_goal(button_clicked_goal);
 
 // tracking non-unique goals, e.g. page views
-var page_views = new AlephBet.Goal('page view', false);  // setting unique to false
+var page_views = new AlephBet.Goal('page view', {unique: false});
 ```
 
 * view results on your Google Analytics Event Tracking Section. Visitors + Goals will be assigned to `actions`. e.g.
@@ -121,8 +121,7 @@ experiments under specific conditions for the same visitor.
 ### Goals
 
 Goals are uniquely tracked by default. i.e. if a goal is set to measure how many visitors clicked on a button, multiple
-clicks won't generate another goal completion. Only one per visitor. Non-unique goals can be set by passing a second
-parameter (`false`) to the goal when creating it.
+clicks won't generate another goal completion. Only one per visitor. Non-unique goals can be set by passing `unique: false` to the goal when creating it.
 
 Goals will only be tracked if the experiment was launched and a variant selected before. Tracking goals is therefore
 safe and idempotent (unless unique is false).

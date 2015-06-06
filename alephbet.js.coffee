@@ -54,11 +54,12 @@ class AlephBet
         @options.tracking_adapter.onInitialize(@options.name, variant)
       @options.variants[variant]?.activate()
 
-    goal_complete: (goal_name, unique=true) ->
-      return if unique && storage.get("#{@options.name}:#{goal_name}")
+    goal_complete: (goal_name, props={}) ->
+      utils.defaults(props, {unique: true})
+      return if props.unique && storage.get("#{@options.name}:#{goal_name}")
       variant = @get_stored_variant()
       return unless variant
-      storage.set("#{@options.name}:#{goal_name}", true) if unique
+      storage.set("#{@options.name}:#{goal_name}", true) if props.unique
       @options.tracking_adapter.onEvent(@options.name, variant, goal_name)
 
     get_stored_variant: ->
@@ -85,7 +86,8 @@ class AlephBet
       throw 'trigger must be a function' if typeof @options.trigger isnt 'function'
 
   class @Goal
-    constructor: (@name, @unique=true) ->
+    constructor: (@name, @props={}) ->
+      utils.defaults(@props, {unique: true})
 
     add_experiment: (experiment) ->
       @experiments ||= []
@@ -93,7 +95,7 @@ class AlephBet
 
     complete: ->
       for experiment in @experiments
-        experiment.goal_complete(@name, @unique)
+        experiment.goal_complete(@name, @props)
 
 log = (message) ->
   utils.set_debug(AlephBet.options.debug)
