@@ -26,7 +26,7 @@ built-in support for unique goals and visitor tracking.
 ## Quick Start
 
 * Make sure your Google Universal analytics is set up.
-* Include `alephbet.min.js` in the head section of your HTML.
+* [Download](https://github.com/gingerlime/alephbet/releases/latest) and include `alephbet.min.js` in the head section of your HTML.
 * Create an experiment:
 
 ```javacript
