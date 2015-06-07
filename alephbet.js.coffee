@@ -18,6 +18,13 @@ class AlephBet
     @onEvent: (experiment_name, variant, event_name) =>
       @_track(@namespace, experiment_name, "#{variant} | #{event_name}")
 
+  class @LocalStorageAdapter
+    @namespace: 'alephbet'
+    @set: (key, value) ->
+      new Storage(@namespace).set(key, value)
+    @get: (key) ->
+      new Storage(@namespace).get(key)
+
   class @Experiment
     @_options:
       name: null
@@ -25,6 +32,7 @@ class AlephBet
       sample: 1.0
       trigger: -> true
       tracking_adapter: AlephBet.GoogleUniversalAnalyticsAdapter
+      storage_adapter: AlephBet.LocalStorageAdapter
 
     constructor: (@options={}) ->
       utils.defaults(@options, Experiment._options)
@@ -51,34 +59,39 @@ class AlephBet
         log("#{variant} active")
       else
         variant = @pick_variant()
-        @options.tracking_adapter.onInitialize(@options.name, variant)
+        @tracking().onInitialize(@options.name, variant)
       @options.variants[variant]?.activate()
 
     goal_complete: (goal_name, props={}) ->
       utils.defaults(props, {unique: true})
-      return if props.unique && storage.get("#{@options.name}:#{goal_name}")
+      return if props.unique && @storage().get("#{@options.name}:#{goal_name}")
       variant = @get_stored_variant()
       return unless variant
-      storage.set("#{@options.name}:#{goal_name}", true) if props.unique
-      @options.tracking_adapter.onEvent(@options.name, variant, goal_name)
+      @storage().set("#{@options.name}:#{goal_name}", true) if props.unique
+      log("experiment: #{@options.name} variant:#{variant} goal:#{goal_name} complete")
+      @tracking().onEvent(@options.name, variant, goal_name)
 
     get_stored_variant: ->
-      storage.get("#{@options.name}:variant")
+      @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
       partitions = 1.0 / @variants.length
       chosen_partition = Math.floor(Math.random() / partitions)
       variant = @variants[chosen_partition]
       log("#{variant} picked")
-      storage.set("#{@options.name}:variant", variant)
+      @storage().set("#{@options.name}:variant", variant)
 
     in_sample: ->
-      active = storage.get("#{@options.name}:in_sample")
+      active = @storage().get("#{@options.name}:in_sample")
       return active unless typeof active is 'undefined'
-      storage.set("#{@options.name}:in_sample", Math.random() <= @options.sample)
+      @storage().set("#{@options.name}:in_sample", Math.random() <= @options.sample)
 
     add_goal: (goal) =>
       goal.add_experiment(this)
+
+    storage: -> @options.storage_adapter
+
+    tracking: -> @options.tracking_adapter
 
     _validate = ->
       throw 'an experiment name must be specified' if @options.name is null
@@ -100,7 +113,5 @@ class AlephBet
 log = (message) ->
   utils.set_debug(AlephBet.options.debug)
   utils.log(message)
-
-storage = new Storage('alephbet')
 
 module.exports = AlephBet

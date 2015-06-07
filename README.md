@@ -4,7 +4,8 @@ AlephBet is a pure-javascript A/B (multivariate) testing framework for developer
 
 Key Features:
 
-* Pluggable event tracking backend (defaults to Google Universal Analytics)
+* Pluggable backends: event tracking (defaults to Google Universal Analytics), and storage (defaults to
+  localStorage)
 * Supports multiple variants and goals
 * Tracks unique visitors and goal completions
 * Flexible triggers
@@ -29,7 +30,7 @@ built-in support for unique goals and visitor tracking.
 * [Download](https://github.com/gingerlime/alephbet/releases/latest) and include `alephbet.min.js` in the head section of your HTML.
 * Create an experiment:
 
-```javacript
+```javascript
 var button_color_experiment = new AlephBet.Experiment({
   name: 'button color',  // the name of this experiment; required.
   variants: {  // variants for this experiment; required.
@@ -185,6 +186,34 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
     });
 </script>
 
+```
+
+### Custom Storage Adapter
+
+Similar to the tracking adapter, you can customize the storage adapter. AlephBet uses localStorage by default, but if you want to use cookies or customize how data is persisted on the client, creating an adapter is very easy.
+
+Here's a simple example of a cookie storage adapter with expiry of 30 days, using
+[js-cookie](https://github.com/js-cookie/js-cookie):
+
+```html
+<script src="/path/to/js.cookie.js"></script>
+<script type="text/javascript">
+    // NOTE: using JSON stringify / parse to allow storing more complex values
+    var storage_adapter = {
+        set: function(key, value) {
+            Cookies.set(key, JSON.stringify(value), {expires: 30});
+        },
+        get: function(key) {
+            try { return JSON.parse(Cookies.get(key)); } catch(e) { return Cookies.get(key); }
+        }
+    };
+    var my_experiment = new AlephBet.Experiment({
+        name: 'my experiment',
+        variants: { // ...
+        },
+        storage_adapter: storage_adapter,
+        // ...
+    });
 ```
 
 ### Debug mode
