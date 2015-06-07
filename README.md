@@ -24,6 +24,9 @@ AlephBet was heavily inspired by Optimizely (sans WYSIWYG and reporting) and
 The code structure and some code elements were taken from cohorts.js, with some notable changes to terminology and
 built-in support for unique goals and visitor tracking.
 
+For more detailed info about the background and rationale for creating AlephBet, please check out this [blog
+post](http://blog.gingerlime.com/2015/alephbet-javascript-ab-test-framework-for-developers/)
+
 ## Quick Start
 
 * Make sure your Google Universal analytics is set up.
