@@ -99,8 +99,6 @@ AlephBet = (function() {
   AlephBet.GoogleUniversalAnalyticsAdapter = (function() {
     function GoogleUniversalAnalyticsAdapter() {}
 
-    GoogleUniversalAnalyticsAdapter.namespace = 'alephbet';
-
     GoogleUniversalAnalyticsAdapter._track = function(category, action, label, value) {
       log("Google Universal Analytics track: " + category + ", " + action + ", " + label + ", " + value);
       if (typeof ga !== 'function') {
@@ -109,12 +107,12 @@ AlephBet = (function() {
       return ga('send', 'event', category, action, label, value);
     };
 
-    GoogleUniversalAnalyticsAdapter.onInitialize = function(experiment_name, variant) {
-      return GoogleUniversalAnalyticsAdapter._track(GoogleUniversalAnalyticsAdapter.namespace, experiment_name, variant + " | Visitors");
+    GoogleUniversalAnalyticsAdapter.onInitialize = function(experiment_namespace, experiment_name, variant) {
+      return GoogleUniversalAnalyticsAdapter._track(experiment_namespace, experiment_name, variant + " | Visitors");
     };
 
-    GoogleUniversalAnalyticsAdapter.onEvent = function(experiment_name, variant, event_name) {
-      return GoogleUniversalAnalyticsAdapter._track(GoogleUniversalAnalyticsAdapter.namespace, experiment_name, variant + " | " + event_name);
+    GoogleUniversalAnalyticsAdapter.onEvent = function(experiment_namespace, experiment_name, variant, event_name) {
+      return GoogleUniversalAnalyticsAdapter._track(experiment_namespace, experiment_name, variant + " | " + event_name);
     };
 
     return GoogleUniversalAnalyticsAdapter;
@@ -124,14 +122,12 @@ AlephBet = (function() {
   AlephBet.LocalStorageAdapter = (function() {
     function LocalStorageAdapter() {}
 
-    LocalStorageAdapter.namespace = 'alephbet';
-
-    LocalStorageAdapter.set = function(key, value) {
-      return new Storage(this.namespace).set(key, value);
+    LocalStorageAdapter.set = function(namespace, key, value) {
+      return new Storage(namespace).set(key, value);
     };
 
-    LocalStorageAdapter.get = function(key) {
-      return new Storage(this.namespace).get(key);
+    LocalStorageAdapter.get = function(namespace, key) {
+      return new Storage(namespace).get(key);
     };
 
     return LocalStorageAdapter;
@@ -143,6 +139,7 @@ AlephBet = (function() {
 
     Experiment._options = {
       name: null,
+      namespace: 'alephbet',
       variants: null,
       sample: 1.0,
       trigger: function() {
@@ -187,7 +184,7 @@ AlephBet = (function() {
         log(variant + " active");
       } else {
         variant = this.pick_variant();
-        this.tracking().onInitialize(this.options.name, variant);
+        this.tracking().onInitialize(this.options.namespace, this.options.name, variant);
       }
       return (ref = this.options.variants[variant]) != null ? ref.activate() : void 0;
     };
@@ -200,7 +197,7 @@ AlephBet = (function() {
       utils.defaults(props, {
         unique: true
       });
-      if (props.unique && this.storage().get(this.options.name + ":" + goal_name)) {
+      if (props.unique && this.storage().get(this.options.namespace, this.options.name + ":" + goal_name)) {
         return;
       }
       variant = this.get_stored_variant();
@@ -208,14 +205,14 @@ AlephBet = (function() {
         return;
       }
       if (props.unique) {
-        this.storage().set(this.options.name + ":" + goal_name, true);
+        this.storage().set(this.options.namespace, this.options.name + ":" + goal_name, true);
       }
       log("experiment: " + this.options.name + " variant:" + variant + " goal:" + goal_name + " complete");
-      return this.tracking().onEvent(this.options.name, variant, goal_name);
+      return this.tracking().onEvent(this.options.namespace, this.options.name, variant, goal_name);
     };
 
     Experiment.prototype.get_stored_variant = function() {
-      return this.storage().get(this.options.name + ":variant");
+      return this.storage().get(this.options.namespace, this.options.name + ":variant");
     };
 
     Experiment.prototype.pick_variant = function() {
@@ -224,16 +221,16 @@ AlephBet = (function() {
       chosen_partition = Math.floor(Math.random() / partitions);
       variant = this.variants[chosen_partition];
       log(variant + " picked");
-      return this.storage().set(this.options.name + ":variant", variant);
+      return this.storage().set(this.options.namespace, this.options.name + ":variant", variant);
     };
 
     Experiment.prototype.in_sample = function() {
       var active;
-      active = this.storage().get(this.options.name + ":in_sample");
+      active = this.storage().get(this.options.namespace, this.options.name + ":in_sample");
       if (typeof active !== 'undefined') {
         return active;
       }
-      return this.storage().set(this.options.name + ":in_sample", Math.random() <= this.options.sample);
+      return this.storage().set(this.options.namespace, this.options.name + ":in_sample", Math.random() <= this.options.sample);
     };
 
     Experiment.prototype.add_goal = function(goal) {
@@ -251,6 +248,9 @@ AlephBet = (function() {
     _validate = function() {
       if (this.options.name === null) {
         throw 'an experiment name must be specified';
+      }
+      if (this.options.namespace === null) {
+        throw 'an experiment namespace must be specified';
       }
       if (this.options.variants === null) {
         throw 'variants must be provided';
