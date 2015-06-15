@@ -27,6 +27,12 @@ built-in support for unique goals and visitor tracking.
 For more detailed info about the background and rationale for creating AlephBet, please check out this [blog
 post](http://blog.gingerlime.com/2015/alephbet-javascript-ab-test-framework-for-developers/)
 
+## Screencast
+
+[![AlephBet Screencast](https://img.youtube.com/vi/NGJ0kdsxNIc/0.jpg)](https://www.youtube.com/watch?v=NGJ0kdsxNIc&vq=hd1080)
+
+[code snippet used on the screencast](http://codepen.io/anon/pen/xGLrRV?editors=001)
+
 ## Quick Start
 
 * Make sure your Google Universal analytics is set up.
