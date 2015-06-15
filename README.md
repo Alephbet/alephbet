@@ -173,10 +173,10 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
         writeKey: "ENTER YOUR WRITE KEY"
     });
     var tracking_adapter = {
-        onInitialize: function(experiment_name, variant) {
+        experiment_start: function(experiment_name, variant) {
             keen_client.addEvent(experiment_name, {variant: variant, event: 'participate'});
         },
-        onEvent: function(experiment_name, variant, event_name) {
+        goal_complete: function(experiment_name, variant, event_name) {
             keen_client.addEvent(experiment_name, {variant: variant, event: event_name});
         }
     };

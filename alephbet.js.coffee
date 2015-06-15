@@ -12,10 +12,10 @@ class AlephBet
       throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
       ga('send', 'event', category, action, label, value)
 
-    @onInitialize: (experiment_name, variant) =>
+    @experiment_start: (experiment_name, variant) =>
       @_track(@namespace, experiment_name, "#{variant} | Visitors")
 
-    @onEvent: (experiment_name, variant, event_name) =>
+    @goal_complete: (experiment_name, variant, event_name) =>
       @_track(@namespace, experiment_name, "#{variant} | #{event_name}")
 
   class @LocalStorageAdapter
@@ -59,7 +59,7 @@ class AlephBet
         log("#{variant} active")
       else
         variant = @pick_variant()
-        @tracking().onInitialize(@options.name, variant)
+        @tracking().experiment_start(@options.name, variant)
       @options.variants[variant]?.activate()
 
     goal_complete: (goal_name, props={}) ->
@@ -69,7 +69,7 @@ class AlephBet
       return unless variant
       @storage().set("#{@options.name}:#{goal_name}", true) if props.unique
       log("experiment: #{@options.name} variant:#{variant} goal:#{goal_name} complete")
-      @tracking().onEvent(@options.name, variant, goal_name)
+      @tracking().goal_complete(@options.name, variant, goal_name)
 
     get_stored_variant: ->
       @storage().get("#{@options.name}:variant")
