@@ -1,3 +1,9 @@
+* 0.6.0 - BREAKING changes if using the built-in google analytics adapter
+    - assignment of experiment name and variation were combined
+      into actions, and visitors/goals into label.
+      It seems to be easier to look / process results this way
+    - small fix to logging of options
+
 * 0.5.0 - BREAKING changes
     - tracking adapters : renamed onInitialize to experiment_start and onEvent to goal_complete
     - added CHANGES text file

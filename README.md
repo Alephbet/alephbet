@@ -77,10 +77,10 @@ button_color_experiment.add_goal(button_clicked_goal);
 var page_views = new AlephBet.Goal('page view', {unique: false});
 ```
 
-* view results on your Google Analytics Event Tracking Section. Visitors + Goals will be assigned to `actions`. e.g.
-  - `red | Visitors` : unique count of visitors assigned to the `red` variant.
-  - `red | button clicked` : unique visitors clicking on the button.
-  - `red | viewed page` : count of pages viewed by all visitors (not-unique) *after* the experiment started.
+* view results on your Google Analytics Event Tracking Section. The experiment name + variation will be assigned to  `actions`, and Visitors or Goals to `label`. e.g.
+  - action: `button color | red`, label: `Visitors` : unique count of visitors assigned to the `red` variant.
+  - `button color | blue`, `button clicked` : unique visitors clicking on the button assigned to the `blue` variant.
+  - `button color | red`, `viewed page` : count of pages viewed by all visitors (not-unique) *after* the experiment started.
 
 ## Advanced Usage
 

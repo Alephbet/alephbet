@@ -13,10 +13,10 @@ class AlephBet
       ga('send', 'event', category, action, label, value)
 
     @experiment_start: (experiment_name, variant) =>
-      @_track(@namespace, experiment_name, "#{variant} | Visitors")
+      @_track(@namespace, "#{experiment_name} | #{variant}", 'Visitors')
 
-    @goal_complete: (experiment_name, variant, event_name) =>
-      @_track(@namespace, experiment_name, "#{variant} | #{event_name}")
+    @goal_complete: (experiment_name, variant, goal) =>
+      @_track(@namespace, "#{experiment_name} | #{variant}", goal)
 
   class @LocalStorageAdapter
     @namespace: 'alephbet'
@@ -41,7 +41,7 @@ class AlephBet
       _run.call(this)
 
     run: ->
-      log("running with options: #{@options}")
+      log("running with options: #{JSON.stringify(@options)}")
       _force_variant()
       @apply_variant()
 
