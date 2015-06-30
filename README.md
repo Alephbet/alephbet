@@ -33,6 +33,8 @@ post](http://blog.gingerlime.com/2015/alephbet-javascript-ab-test-framework-for-
 
 [code snippet used on the screencast](http://codepen.io/anon/pen/xGLrRV?editors=001)
 
+for more screencasts, tips and info, please check the [wiki](https://github.com/gingerlime/alephbet/wiki)
+
 ## Quick Start
 
 * Make sure your Google Universal analytics is set up.
