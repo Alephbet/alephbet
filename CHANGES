@@ -1,3 +1,6 @@
+* 0.6.1 small bug fix
+    - cannot read propery 'length' of undefined when unlinked goal is complete
+
 * 0.6.0 - BREAKING changes if using the built-in google analytics adapter
     - assignment of experiment name and variation were combined
       into actions, and visitors/goals into label.

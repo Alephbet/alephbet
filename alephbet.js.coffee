@@ -101,9 +101,9 @@ class AlephBet
   class @Goal
     constructor: (@name, @props={}) ->
       utils.defaults(@props, {unique: true})
+      @experiments = []
 
     add_experiment: (experiment) ->
-      @experiments ||= []
       @experiments.push(experiment)
 
     complete: ->
