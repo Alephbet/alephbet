@@ -60,7 +60,8 @@ class AlephBet
       else
         variant = @pick_variant()
         @tracking().experiment_start(@options.name, variant)
-      @options.variants[variant]?.activate()
+      @options.variants[variant]?.activate(this)
+      @storage().set("#{@options.name}:variant", variant)
 
     goal_complete: (goal_name, props={}) ->
       utils.defaults(props, {unique: true})
@@ -79,12 +80,14 @@ class AlephBet
       chosen_partition = Math.floor(Math.random() / partitions)
       variant = @variants[chosen_partition]
       log("#{variant} picked")
-      @storage().set("#{@options.name}:variant", variant)
+      variant
 
     in_sample: ->
       active = @storage().get("#{@options.name}:in_sample")
       return active unless typeof active is 'undefined'
-      @storage().set("#{@options.name}:in_sample", Math.random() <= @options.sample)
+      active = Math.random() <= @options.sample
+      @storage().set("#{@options.name}:in_sample", active)
+      active
 
     add_goal: (goal) =>
       goal.add_experiment(this)
