@@ -92,6 +92,9 @@ class AlephBet
     add_goal: (goal) =>
       goal.add_experiment(this)
 
+    add_goals: (goals) =>
+      @add_goal(goal) for goal in goals
+
     storage: -> @options.storage_adapter
 
     tracking: -> @options.tracking_adapter
@@ -108,6 +111,9 @@ class AlephBet
 
     add_experiment: (experiment) ->
       @experiments.push(experiment)
+
+    add_experiments: (experiments) ->
+      @add_experiment(experiment) for experiment in experiments
 
     complete: ->
       for experiment in @experiments
