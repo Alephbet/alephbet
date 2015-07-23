@@ -1,3 +1,11 @@
+* 0.7.0 new convenience methods: add_goals / add_experiments
+    - allow passing a list instead of one item
+
+* 0.6.2 internal API improvements
+    - calling activate before setting in storage
+    - passing the experiment to the activate callback
+    - making sure we return the value from in_sample
+
 * 0.6.1 small bug fix
     - cannot read propery 'length' of undefined when unlinked goal is complete
 

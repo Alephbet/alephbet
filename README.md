@@ -164,6 +164,10 @@ _(all_goals).each(function (goal) {
   button_color_experiment.add_goal(goal);
   buy_button_cta_experiment.add_goal(goal);
 });
+
+// alternatively, you can use the add_goals method and pass it an array of goals
+button_color_experiment.add_goals(all_goals);
+buy_button_cta_experiment.add_goals(all_goals);
 ```
 
 ### Custom Tracking Adapter
