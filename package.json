@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "lodash": "^3.9.3",
-    "store": "~1.3.17"
+    "store": "~1.3.17",
+    "node-uuid": "~1.4.2"
   },
   "devDependencies": {
     "browserify": "~10.2.3",
@@ -23,7 +24,7 @@
     "watchify": "^3.2.2"
   },
   "scripts": {
-    "lodash-custom": "lodash include=keys,defaults exports=node -o ./lib/lodash.custom.js",
+    "lodash-custom": "lodash include=keys,defaults,remove exports=node -o ./lib/lodash.custom.js",
     "build-debug": "browserify alephbet.js.coffee -d --standalone AlephBet -o dist/alephbet.js",
     "build-min": "browserify alephbet.js.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
     "build": "npm run lodash-custom && npm run build-debug && npm run build-min",

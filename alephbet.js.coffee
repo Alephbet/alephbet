@@ -1,8 +1,11 @@
 utils = require('./utils.js.coffee')
 Storage = require('./storage.js.coffee')
+adapters = require('./adapters.js.coffee')
 
 class AlephBet
   @options = {debug: false}
+
+  @PersistentQueueGoogleAnalyticsAdapter = adapters.PersistentQueueGoogleAnalyticsAdapter
 
   class @GoogleUniversalAnalyticsAdapter
     @namespace: 'alephbet'
@@ -121,8 +124,8 @@ class AlephBet
       for experiment in @experiments
         experiment.goal_complete(@name, @props)
 
-log = (message) ->
-  utils.set_debug(AlephBet.options.debug)
-  utils.log(message)
+  log = @log = (message) =>
+    utils.set_debug(@options.debug)
+    utils.log(message)
 
 module.exports = AlephBet
