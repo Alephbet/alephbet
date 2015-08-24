@@ -1,3 +1,6 @@
+* 0.7.1 small internal refactoring
+    - added name, variants, and variant_names as attributes of Experiment
+
 * 0.7.0 new convenience methods: add_goals / add_experiments
     - allow passing a list instead of one item
 

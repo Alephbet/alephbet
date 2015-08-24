@@ -37,7 +37,9 @@ class AlephBet
     constructor: (@options={}) ->
       utils.defaults(@options, Experiment._options)
       _validate.call(this)
-      @variants = utils.keys(@options.variants)
+      @name = @options.name
+      @variants = @options.variants
+      @variant_names = utils.keys(@variants)
       _run.call(this)
 
     run: ->
@@ -60,7 +62,7 @@ class AlephBet
       else
         variant = @pick_variant()
         @tracking().experiment_start(@options.name, variant)
-      @options.variants[variant]?.activate(this)
+      @variants[variant]?.activate(this)
       @storage().set("#{@options.name}:variant", variant)
 
     goal_complete: (goal_name, props={}) ->
@@ -76,9 +78,9 @@ class AlephBet
       @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
-      partitions = 1.0 / @variants.length
+      partitions = 1.0 / @variant_names.length
       chosen_partition = Math.floor(Math.random() / partitions)
-      variant = @variants[chosen_partition]
+      variant = @variant_names[chosen_partition]
       log("#{variant} picked")
       variant
 
