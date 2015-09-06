@@ -1,3 +1,9 @@
+* 0.8.0 Added PersistentQueueGoogleAnalyticsAdapter
+    - PersistentQueueGoogleAnalyticsAdapter stores tracking events into storage first, and only clears them after a
+      callback
+    - storage defaults to LocalStorageAdapter, but can be swapped
+    - This is an optional adapter and not (yet?) the default
+
 * 0.7.1 small internal refactoring
     - added name, variants, and variant_names as attributes of Experiment
 
