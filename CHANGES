@@ -1,3 +1,6 @@
+* 0.9.0 Added PersistentKeenAdapter
+    - added PersistentQueueKeenAdapter similar to the GA persistent adapter
+
 * 0.8.0 Added PersistentQueueGoogleAnalyticsAdapter
     - PersistentQueueGoogleAnalyticsAdapter stores tracking events into storage first, and only clears them after a
       callback
