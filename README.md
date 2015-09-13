@@ -172,7 +172,13 @@ buy_button_cta_experiment.add_goals(all_goals);
 
 ### Custom Tracking Adapter
 
-AlephBet comes with a built-in Google Analytics adapter. Creating custom adapters is however very easy.
+AlephBet comes with a built-in Google Analytics adapter and two, currently experimental, [adapters](../../wiki/Tips-&-Caveats#persistent-queue-adapters) with potentially better accuracy:
+
+[Persistent Queue GA Adapter](../../wiki/Tips-&-Caveats#persistentqueuegoogleanalyticsadapter)
+
+[Persistent Queue Keen Adapter](../../wiki/Tips-&-Caveats#persistentqueuekeenadapter)
+
+Creating custom adapters is however very easy.
 
 Here's an example for integrating an adapter for [keen.io](https://keen.io)
 
