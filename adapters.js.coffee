@@ -8,7 +8,7 @@ class Adapters
     constructor: (storage = AlephBet.LocalStorageAdapter) ->
       @log = AlephBet.log
       @_storage = storage
-      @_queue = JSON.parse(@_storage.get('_queue') || '[]')
+      @_queue = JSON.parse(@_storage.get('_ga_queue') || '[]')
       @_flush()
 
     _remove_uuid: (uuid) ->
@@ -42,7 +42,7 @@ class Adapters
       @log = AlephBet.log
       @client = keen_client
       @_storage = storage
-      @_queue = JSON.parse(@_storage.get('_queue') || '[]')
+      @_queue = JSON.parse(@_storage.get('_keen_queue') || '[]')
       @_flush()
 
     _remove_uuid: (uuid) ->
