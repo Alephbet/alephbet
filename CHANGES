@@ -1,3 +1,5 @@
+* 0.9.2 bugfix for unique queue names
+
 * 0.9.1 using unique queue names
     - if adapters are used in conjunction this might cause
       errors if they share the same queue
