@@ -11,10 +11,10 @@ class AlephBet
   class @GoogleUniversalAnalyticsAdapter
     @namespace: 'alephbet'
 
-    @_track: (category, action, label, value) ->
-      log("Google Universal Analytics track: #{category}, #{action}, #{label}, #{value}")
+    @_track: (category, action, label) ->
+      log("Google Universal Analytics track: #{category}, #{action}, #{label}")
       throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
-      ga('send', 'event', category, action, label, value)
+      ga('send', 'event', category, action, label, {'nonInteraction': 1})
 
     @experiment_start: (experiment_name, variant) =>
       @_track(@namespace, "#{experiment_name} | #{variant}", 'Visitors')

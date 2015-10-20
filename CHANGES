@@ -1,3 +1,8 @@
+* 0.10.0 GoogleAnalytics Adapter Non interaction
+    - internal refactor to remove `value` from GA events
+    - sending GA events as {'nonInteraction': 1} to avoid
+      Alephbet affecting the bounce rate
+
 * 0.9.2 bugfix for unique queue names
 
 * 0.9.1 using unique queue names
