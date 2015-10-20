@@ -1,3 +1,6 @@
+* 0.10.1 GoogleAnalytics Adapter Non interaction
+    - applying to adapters as well
+
 * 0.10.0 GoogleAnalytics Adapter Non interaction
     - internal refactor to remove `value` from GA events
     - sending GA events as {'nonInteraction': 1} to avoid

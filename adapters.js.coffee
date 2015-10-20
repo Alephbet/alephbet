@@ -21,7 +21,7 @@ class Adapters
       throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
       for item in @_queue
         callback = @_remove_uuid(item.uuid)
-        ga('send', 'event', item.category, item.action, item.label, {'hitCallback': callback})
+        ga('send', 'event', item.category, item.action, item.label, {'hitCallback': callback, 'nonInteraction': 1})
 
     _track: (category, action, label) ->
       @log("Persistent Queue Google Universal Analytics track: #{category}, #{action}, #{label}")
