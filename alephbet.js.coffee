@@ -4,6 +4,7 @@ adapters = require('./adapters.js.coffee')
 
 class AlephBet
   @options = {debug: false}
+  @utils = utils
 
   @PersistentQueueGoogleAnalyticsAdapter = adapters.PersistentQueueGoogleAnalyticsAdapter
   @PersistentQueueKeenAdapter = adapters.PersistentQueueKeenAdapter
