@@ -1,6 +1,6 @@
 {
   "name": "alephbet",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "browser": {
     "lodash.custom": "./lib/lodash.custom.min.js",
