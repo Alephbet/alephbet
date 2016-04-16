@@ -6,6 +6,7 @@ class AlephBet
   @options = {debug: false}
   @utils = utils
 
+  @GimelAdapter = adapters.GimelAdapter
   @PersistentQueueGoogleAnalyticsAdapter = adapters.PersistentQueueGoogleAnalyticsAdapter
   @PersistentQueueKeenAdapter = adapters.PersistentQueueKeenAdapter
 
