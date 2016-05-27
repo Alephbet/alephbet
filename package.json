@@ -21,13 +21,18 @@
     "coffeeify": "~1.1.0",
     "lodash-cli": "^3.9.3",
     "uglify-js": "2.4.23",
-    "watchify": "^3.2.2"
+    "watchify": "^3.2.2",
+    "coffeetape": "^1.0.1",
+    "tape-run": "^2.1.4",
+    "sinon": "^1.17.3"
   },
   "scripts": {
     "lodash-custom": "lodash include=keys,defaults,remove exports=node -o ./lib/lodash.custom.js",
     "build-debug": "browserify alephbet.js.coffee -d --standalone AlephBet -o dist/alephbet.js",
     "build-min": "browserify alephbet.js.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
     "build": "npm run lodash-custom && npm run build-debug && npm run build-min",
+    "test-standalone": "browserify test/alephbet_test.coffee > test/bundle.js && echo '<script src=\"bundle.js\"></script>' > test/test.html",
+    "test": "browserify test/alephbet_test.coffee | tape-run",
     "watch": "watchify alephbet.js.coffee -d --standalone AlephBet -o dist/alephbet.js -v"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
