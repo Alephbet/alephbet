@@ -50,26 +50,28 @@ class AlephBet
 
     run: ->
       log("running with options: #{JSON.stringify(@options)}")
-      _force_variant()
-      @apply_variant()
+      if variant = @get_stored_variant()
+        # a variant was already chosen. activate it
+        log("#{variant} active")
+        @activate_variant(variant)
+      else
+        @conditionally_activate_variant()
 
     _run = -> @run()
 
-    _force_variant = ->
-      # TODO: get variant from URI
+    activate_variant: (variant) ->
+      @variants[variant]?.activate(this)
+      @storage().set("#{@options.name}:variant", variant)
 
-    apply_variant: ->
+    # if experiment conditions match, pick and activate a variant, track experiment start
+    conditionally_activate_variant: ->
       return unless @options.trigger()
       log('trigger set')
       return unless @in_sample()
       log('in sample')
-      if variant = @get_stored_variant()
-        log("#{variant} active")
-      else
-        variant = @pick_variant()
-        @tracking().experiment_start(@options.name, variant)
-      @variants[variant]?.activate(this)
-      @storage().set("#{@options.name}:variant", variant)
+      variant = @pick_variant()
+      @tracking().experiment_start(@options.name, variant)
+      @activate_variant(variant)
 
     goal_complete: (goal_name, props={}) ->
       utils.defaults(props, {unique: true})

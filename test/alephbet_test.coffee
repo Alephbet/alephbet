@@ -75,6 +75,12 @@ describe 'trigger is false', (t) ->
   t.plan(1)
   t.assert(tracking.experiment_start.callCount == 0, 'experiment_start tracking was not called')
 
+describe 'trigger is false after participating', (t) ->
+  experiment({trigger: -> true})
+  experiment({trigger: -> false})
+  t.plan(1)
+  t.assert(activate.callCount == 2, 'activate function is still called')
+
 describe 'tracks goals', (t) ->
   ex = experiment({name: 'with-goals'})
   ex.goal_complete('my goal')
