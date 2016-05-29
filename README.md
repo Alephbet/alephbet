@@ -1,5 +1,7 @@
 # AlephBet
 
+[![Build Status](https://travis-ci.org/Alephbet/alephbet.svg?branch=master)](https://travis-ci.org/Alephbet/alephbet)
+
 AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.
 
 Key Features:
