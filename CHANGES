@@ -1,3 +1,8 @@
+* 0.13.0 BREAKING changes to trigger
+    - triggers are no longer checked after a user participates in an experiment
+    - backwards-compatibility possible by changing your activate function(s)
+    - see https://github.com/Alephbet/alephbet/issues/9
+
 * 0.12.0 added Gimel tracking adapter
 
 * 0.11.0 exposing AlephBet.utils
