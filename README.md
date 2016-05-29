@@ -97,8 +97,7 @@ audience for the experiments (e.g. mobile users, logged-in etc).
 ### Triggers
 
 Experiments automatically start by default. However, a trigger function can be provided, to limit the audience or the
-page(s) where the experiment takes place.
-
+page(s) where the experiment "kicks-off".
 ```javascript
 var button_color_experiment = new AlephBet.Experiment({
   name: 'button color',
@@ -119,6 +118,8 @@ var big_header_experiment = new AlephBet.Experiment({
   // ...
 });
 ```
+
+**NOTE**: once a user participates in an experiment, the trigger is no longer checked. See #9
 
 ### Sample size
 
