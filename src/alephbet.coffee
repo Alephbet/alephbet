@@ -1,9 +1,10 @@
-utils = require('./utils.js.coffee')
-Storage = require('./storage.js.coffee')
-adapters = require('./adapters.js.coffee')
+utils = require('./utils')
+adapters = require('./adapters')
+options = require('./options')
+LocalStorageAdapter = require('./local_storage_adapter')
 
 class AlephBet
-  @options = {debug: false}
+  @options = options
   @utils = utils
 
   @GimelAdapter = adapters.GimelAdapter
@@ -14,7 +15,7 @@ class AlephBet
     @namespace: 'alephbet'
 
     @_track: (category, action, label) ->
-      log("Google Universal Analytics track: #{category}, #{action}, #{label}")
+      utils.log("Google Universal Analytics track: #{category}, #{action}, #{label}")
       throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
       ga('send', 'event', category, action, label, {'nonInteraction': 1})
 
@@ -24,13 +25,6 @@ class AlephBet
     @goal_complete: (experiment_name, variant, goal) =>
       @_track(@namespace, "#{experiment_name} | #{variant}", goal)
 
-  class @LocalStorageAdapter
-    @namespace: 'alephbet'
-    @set: (key, value) ->
-      new Storage(@namespace).set(key, value)
-    @get: (key) ->
-      new Storage(@namespace).get(key)
-
   class @Experiment
     @_options:
       name: null
@@ -38,7 +32,7 @@ class AlephBet
       sample: 1.0
       trigger: -> true
       tracking_adapter: AlephBet.GoogleUniversalAnalyticsAdapter
-      storage_adapter: AlephBet.LocalStorageAdapter
+      storage_adapter: LocalStorageAdapter
 
     constructor: (@options={}) ->
       utils.defaults(@options, Experiment._options)
@@ -49,10 +43,10 @@ class AlephBet
       _run.call(this)
 
     run: ->
-      log("running with options: #{JSON.stringify(@options)}")
+      utils.log("running with options: #{JSON.stringify(@options)}")
       if variant = @get_stored_variant()
         # a variant was already chosen. activate it
-        log("#{variant} active")
+        utils.log("#{variant} active")
         @activate_variant(variant)
       else
         @conditionally_activate_variant()
@@ -66,9 +60,9 @@ class AlephBet
     # if experiment conditions match, pick and activate a variant, track experiment start
     conditionally_activate_variant: ->
       return unless @options.trigger()
-      log('trigger set')
+      utils.log('trigger set')
       return unless @in_sample()
-      log('in sample')
+      utils.log('in sample')
       variant = @pick_variant()
       @tracking().experiment_start(@options.name, variant)
       @activate_variant(variant)
@@ -79,7 +73,7 @@ class AlephBet
       variant = @get_stored_variant()
       return unless variant
       @storage().set("#{@options.name}:#{goal_name}", true) if props.unique
-      log("experiment: #{@options.name} variant:#{variant} goal:#{goal_name} complete")
+      utils.log("experiment: #{@options.name} variant:#{variant} goal:#{goal_name} complete")
       @tracking().goal_complete(@options.name, variant, goal_name)
 
     get_stored_variant: ->
@@ -89,7 +83,7 @@ class AlephBet
       partitions = 1.0 / @variant_names.length
       chosen_partition = Math.floor(Math.random() / partitions)
       variant = @variant_names[chosen_partition]
-      log("#{variant} picked")
+      utils.log("#{variant} picked")
       variant
 
     in_sample: ->
@@ -114,6 +108,7 @@ class AlephBet
       throw 'variants must be provided' if @options.variants is null
       throw 'trigger must be a function' if typeof @options.trigger isnt 'function'
 
+
   class @Goal
     constructor: (@name, @props={}) ->
       utils.defaults(@props, {unique: true})
@@ -129,8 +124,5 @@ class AlephBet
       for experiment in @experiments
         experiment.goal_complete(@name, @props)
 
-  log = @log = (message) =>
-    utils.set_debug(@options.debug)
-    utils.log(message)
 
 module.exports = AlephBet

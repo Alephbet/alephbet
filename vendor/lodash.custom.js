@@ -1,7 +1,7 @@
 /**
  * @license
  * lodash 3.10.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash include="keys,defaults,remove" exports="node" -o ./lib/lodash.custom.js`
+ * Build: `lodash -d include="keys,defaults,remove" exports="node" -o ./vendor/lodash.custom.js`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

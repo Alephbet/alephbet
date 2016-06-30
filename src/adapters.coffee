@@ -1,4 +1,5 @@
-utils = require('./utils.js.coffee')
+utils = require('./utils')
+LocalStorageAdapter = require('./local_storage_adapter')
 
 class Adapters
 
@@ -11,8 +12,7 @@ class Adapters
   class @GimelAdapter
     queue_name: '_gimel_queue'
 
-    constructor: (url, namespace, storage = AlephBet.LocalStorageAdapter) ->
-      @log = AlephBet.log
+    constructor: (url, namespace, storage = LocalStorageAdapter) ->
       @_storage = storage
       @url = url
       @namespace = namespace
@@ -26,7 +26,7 @@ class Adapters
         @_storage.set(@queue_name, JSON.stringify(@_queue))
 
     _jquery_get: (url, data, callback) ->
-      @log('send request using jQuery')
+      utils.log('send request using jQuery')
       $.ajax
         method: 'GET'
         url: url
@@ -34,7 +34,7 @@ class Adapters
         success: callback
 
     _plain_js_get: (url, data, callback) ->
-      @log('fallback on plain js xhr')
+      utils.log('fallback on plain js xhr')
       xhr = new XMLHttpRequest()
       params = ("#{encodeURIComponent(k)}=#{encodeURIComponent(v)}" for k,v of data)
       params = params.join('&').replace(/%20/g, '+')
@@ -57,7 +57,7 @@ class Adapters
         null
 
     _track: (experiment_name, variant, event) ->
-      @log("Persistent Queue Gimel track: #{@namespace}, #{experiment_name}, #{variant}, #{event}")
+      utils.log("Persistent Queue Gimel track: #{@namespace}, #{experiment_name}, #{variant}, #{event}")
       @_queue.shift() if @_queue.length > 100
       @_queue.push
         properties:
@@ -80,8 +80,7 @@ class Adapters
     namespace: 'alephbet'
     queue_name: '_ga_queue'
 
-    constructor: (storage = AlephBet.LocalStorageAdapter) ->
-      @log = AlephBet.log
+    constructor: (storage = LocalStorageAdapter) ->
       @_storage = storage
       @_queue = JSON.parse(@_storage.get(@queue_name) || '[]')
       @_flush()
@@ -98,7 +97,7 @@ class Adapters
         ga('send', 'event', item.category, item.action, item.label, {'hitCallback': callback, 'nonInteraction': 1})
 
     _track: (category, action, label) ->
-      @log("Persistent Queue Google Universal Analytics track: #{category}, #{action}, #{label}")
+      utils.log("Persistent Queue Google Universal Analytics track: #{category}, #{action}, #{label}")
       @_queue.shift() if @_queue.length > 100
       @_queue.push({uuid: utils.uuid(), category: category, action: action, label: label})
       @_storage.set(@queue_name, JSON.stringify(@_queue))
@@ -114,8 +113,7 @@ class Adapters
   class @PersistentQueueKeenAdapter
     queue_name: '_keen_queue'
 
-    constructor: (keen_client, storage = AlephBet.LocalStorageAdapter) ->
-      @log = AlephBet.log
+    constructor: (keen_client, storage = LocalStorageAdapter) ->
       @client = keen_client
       @_storage = storage
       @_queue = JSON.parse(@_storage.get(@queue_name) || '[]')
@@ -133,7 +131,7 @@ class Adapters
         @client.addEvent(item.experiment_name, item.properties, callback)
 
     _track: (experiment_name, variant, event) ->
-      @log("Persistent Queue Keen track: #{experiment_name}, #{variant}, #{event}")
+      utils.log("Persistent Queue Keen track: #{experiment_name}, #{variant}, #{event}")
       @_queue.shift() if @_queue.length > 100
       @_queue.push
         experiment_name: experiment_name

@@ -1,7 +1,7 @@
 test = require('tape')
 sinon = require('sinon')
 _ = require('lodash')
-AlephBet = require('../alephbet.js.coffee')
+AlephBet = require('../src/alephbet')
 
 storage = null
 tracking = null
