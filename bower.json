@@ -1,7 +1,7 @@
 {
   "name": "alephbet",
-  "version": "0.14.0",
-  "main": "dist/alephbet.min.js",
+  "version": "0.14.1",
+  "main": "lib/alephbet.min.js",
   "dependencies": {},
   "devDependencies": {
     "browserify": "~10.2.3",
