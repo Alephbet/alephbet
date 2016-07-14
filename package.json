@@ -5,6 +5,9 @@
   "browser": {
     "lodash.custom": "./vendor/lodash.custom.min.js"
   },
+  "directories": {
+    "lib": "./lib"
+  },
   "browserify": {
     "transform": [
 	  "coffeeify"
