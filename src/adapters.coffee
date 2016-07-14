@@ -1,5 +1,5 @@
 utils = require('./utils')
-LocalStorageAdapter = require('./local_storage_adapter')
+Storage = require('./storage')
 
 class Adapters
 
@@ -12,7 +12,7 @@ class Adapters
   class @GimelAdapter
     queue_name: '_gimel_queue'
 
-    constructor: (url, namespace, storage = LocalStorageAdapter) ->
+    constructor: (url, namespace, storage = Adapters.LocalStorageAdapter) ->
       @_storage = storage
       @url = url
       @namespace = namespace
@@ -80,7 +80,7 @@ class Adapters
     namespace: 'alephbet'
     queue_name: '_ga_queue'
 
-    constructor: (storage = LocalStorageAdapter) ->
+    constructor: (storage = Adapters.LocalStorageAdapter) ->
       @_storage = storage
       @_queue = JSON.parse(@_storage.get(@queue_name) || '[]')
       @_flush()
@@ -113,7 +113,7 @@ class Adapters
   class @PersistentQueueKeenAdapter
     queue_name: '_keen_queue'
 
-    constructor: (keen_client, storage = LocalStorageAdapter) ->
+    constructor: (keen_client, storage = Adapters.LocalStorageAdapter) ->
       @client = keen_client
       @_storage = storage
       @_queue = JSON.parse(@_storage.get(@queue_name) || '[]')
@@ -147,5 +147,29 @@ class Adapters
 
     goal_complete: (experiment_name, variant, goal) =>
       @_track(experiment_name, variant, goal)
+
+
+  class @GoogleUniversalAnalyticsAdapter
+    @namespace: 'alephbet'
+
+    @_track: (category, action, label) ->
+      utils.log("Google Universal Analytics track: #{category}, #{action}, #{label}")
+      throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
+      ga('send', 'event', category, action, label, {'nonInteraction': 1})
+
+    @experiment_start: (experiment_name, variant) =>
+      @_track(@namespace, "#{experiment_name} | #{variant}", 'Visitors')
+
+    @goal_complete: (experiment_name, variant, goal) =>
+      @_track(@namespace, "#{experiment_name} | #{variant}", goal)
+
+
+  class @LocalStorageAdapter
+    @namespace: 'alephbet'
+    @set: (key, value) ->
+      new Storage(@namespace).set(key, value)
+    @get: (key) ->
+      new Storage(@namespace).get(key)
+
 
 module.exports = Adapters

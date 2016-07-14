@@ -1,7 +1,6 @@
 utils = require('./utils')
 adapters = require('./adapters')
 options = require('./options')
-LocalStorageAdapter = require('./local_storage_adapter')
 
 class AlephBet
   @options = options
@@ -11,28 +10,14 @@ class AlephBet
   @PersistentQueueGoogleAnalyticsAdapter = adapters.PersistentQueueGoogleAnalyticsAdapter
   @PersistentQueueKeenAdapter = adapters.PersistentQueueKeenAdapter
 
-  class @GoogleUniversalAnalyticsAdapter
-    @namespace: 'alephbet'
-
-    @_track: (category, action, label) ->
-      utils.log("Google Universal Analytics track: #{category}, #{action}, #{label}")
-      throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
-      ga('send', 'event', category, action, label, {'nonInteraction': 1})
-
-    @experiment_start: (experiment_name, variant) =>
-      @_track(@namespace, "#{experiment_name} | #{variant}", 'Visitors')
-
-    @goal_complete: (experiment_name, variant, goal) =>
-      @_track(@namespace, "#{experiment_name} | #{variant}", goal)
-
   class @Experiment
     @_options:
       name: null
       variants: null
       sample: 1.0
       trigger: -> true
-      tracking_adapter: AlephBet.GoogleUniversalAnalyticsAdapter
-      storage_adapter: LocalStorageAdapter
+      tracking_adapter: adapters.GoogleUniversalAnalyticsAdapter
+      storage_adapter: adapters.LocalStorageAdapter
 
     constructor: (@options={}) ->
       utils.defaults(@options, Experiment._options)

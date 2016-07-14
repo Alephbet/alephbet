@@ -3,7 +3,7 @@
   "version": "0.13.0",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "browser": {
-    "lodash.custom": "./lib/lodash.custom.min.js"
+    "lodash.custom": "./vendor/lodash.custom.min.js"
   },
   "browserify": {
     "transform": [
@@ -26,7 +26,7 @@
     "sinon": "^1.17.3"
   },
   "scripts": {
-    "lodash-custom": "lodash -d include=keys,defaults,remove exports=node -o ./vendor/lodash.custom.js",
+    "lodash-custom": "lodash -p include=keys,defaults,remove exports=node -o ./vendor/lodash.custom.min.js",
     "build-debug": "browserify --extension='.coffee' src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js",
     "build-min": "browserify --extension='.coffee' src/alephbet.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
     "build": "npm run coffeefy && npm run lodash-custom && npm run build-debug && npm run build-min",

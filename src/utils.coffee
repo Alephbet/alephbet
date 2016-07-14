@@ -1,5 +1,5 @@
 # NOTE: using a custom build of lodash, to save space
-_ = require('../vendor/lodash.custom')
+_ = require('lodash.custom')
 uuid = require('node-uuid')
 options = require('./options')
 
