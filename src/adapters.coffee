@@ -27,7 +27,7 @@ class Adapters
 
     _jquery_get: (url, data, callback) ->
       utils.log('send request using jQuery')
-      $.ajax
+      window.jQuery.ajax
         method: 'GET'
         url: url
         data: data
@@ -45,7 +45,7 @@ class Adapters
       xhr.send()
 
     _ajax_get: (url, data, callback) ->
-      if $?.ajax
+      if window.jQuery?.ajax
         @_jquery_get(url, data, callback)
       else
         @_plain_js_get(url, data, callback)
