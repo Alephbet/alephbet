@@ -14,6 +14,7 @@ class AlephBet
     @_options:
       name: null
       variants: null
+      user_id: null
       sample: 1.0
       trigger: -> true
       tracking_adapter: adapters.GoogleUniversalAnalyticsAdapter
@@ -24,6 +25,7 @@ class AlephBet
       _validate.call(this)
       @name = @options.name
       @variants = @options.variants
+      @user_id = @options.user_id
       @variant_names = utils.keys(@variants)
       _run.call(this)
 
@@ -49,7 +51,7 @@ class AlephBet
       return unless @in_sample()
       utils.log('in sample')
       variant = @pick_variant()
-      @tracking().experiment_start(@options.name, variant)
+      @tracking().experiment_start(this, variant)
       @activate_variant(variant)
 
     goal_complete: (goal_name, props={}) ->
@@ -59,14 +61,14 @@ class AlephBet
       return unless variant
       @storage().set("#{@options.name}:#{goal_name}", true) if props.unique
       utils.log("experiment: #{@options.name} variant:#{variant} goal:#{goal_name} complete")
-      @tracking().goal_complete(@options.name, variant, goal_name)
+      @tracking().goal_complete(this, variant, goal_name, props)
 
     get_stored_variant: ->
       @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
       partitions = 1.0 / @variant_names.length
-      chosen_partition = Math.floor(Math.random() / partitions)
+      chosen_partition = Math.floor(@_random('variant') / partitions)
       variant = @variant_names[chosen_partition]
       utils.log("#{variant} picked")
       variant
@@ -74,9 +76,14 @@ class AlephBet
     in_sample: ->
       active = @storage().get("#{@options.name}:in_sample")
       return active unless typeof active is 'undefined'
-      active = Math.random() <= @options.sample
+      active = @_random('sample') <= @options.sample
       @storage().set("#{@options.name}:in_sample", active)
       active
+
+    _random: (salt) ->
+      return utils.random() unless @user_id
+      seed = "#{@name}.#{salt}.#{@user_id}"
+      utils.random(seed)
 
     add_goal: (goal) =>
       goal.add_experiment(this)

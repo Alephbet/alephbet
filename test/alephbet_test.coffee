@@ -56,6 +56,13 @@ describe 'starts the experiment', (t) ->
   t.assert(activate.calledWith(ex), 'was called with experiment')
   t.assert(tracking.experiment_start.callCount == 1, 'experiment_start tracking was called once')
 
+describe 'deterministic variant with a given user_id', (t) ->
+  ex = experiment({user_id: 'yuzu'})
+  t.plan(2)
+  t.assert(ex.pick_variant() == 'blue', 'always picks blue variant')
+  ex = experiment({user_id: 'gosho'})
+  t.assert(ex.pick_variant() == 'red', 'always picks red variant')
+
 describe 'sticks to the same variant after choosing it', (t) ->
   ex = experiment({name: 'variant test'})
   variant = ex.get_stored_variant()
