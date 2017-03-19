@@ -6,7 +6,8 @@ AlephBet is a pure-javascript A/B (multivariate) testing framework for developer
 
 Key Features:
 
-* **NEW**: run your own tracking backend on AWS Lambda with [Gimel](https://github.com/Alephbet/gimel) (optional)
+* **NEW**: user-based / cross-device experiments. See https://github.com/Alephbet/alephbet/issues/16
+* **NEW**: run your own tracking backend on AWS Lambda with [Gimel](https://github.com/Alephbet/gimel) (recommended)
 * Pluggable backends: event tracking (defaults to Google Universal Analytics), and storage (defaults to
   localStorage)
 * Supports multiple variants and goals
@@ -134,6 +135,38 @@ experiment, the same variant will always be shown to them. If visitors are exclu
 permanently excluded from seeing the experiment. Triggers however will be checked more than once, to allow launching
 experiments under specific conditions for the same visitor.
 
+### User-based / Cross-device tracking
+
+You can now pass a `user_id` to the experiment as an optional parameter.
+This allows experiment to work across devices on a per-user basis.
+
+```javascript
+var button_color_experiment = new AlephBet.Experiment({
+  name: 'button color',
+  user_id: 'my_user_id',  // pass over the unique user id bound to this experiment
+  variants: {  // variants for this experiment; required.
+    blue: {
+      activate: function() {  // activate function to execute if variant is selected
+        $('#my-btn').attr('style', 'color: blue;');
+      }
+    },
+    red: {
+      activate: function() {
+        $('#my-btn').attr('style', 'color: red;');
+      }
+    }
+  },
+});
+```
+
+Notes:
+
+* For user-based tracking, make sure you *always* have a user_id. Do not mix visitors (without an id) and users in the same experiment.
+* Cross-device tracking only works with the [Gimel](https://github.com/Alephbet/gimel) or keen.io tracking backends. It does not work with Google Analytics.
+
+
+See #16 for more information
+
 ### Goals
 
 Goals are uniquely tracked by default. i.e. if a goal is set to measure how many visitors clicked on a button, multiple
@@ -188,6 +221,8 @@ Creating custom adapters is however very easy.
 
 Here's an example for integrating an adapter for [keen.io](https://keen.io)
 
+(For a more complete implementation, you should use the built-in `Alephbet.PersistentQueueKeenAdapter`)
+
 ```html
 <script src="https://d26b395fwzu5fz.cloudfront.net/3.2.4/keen.min.js" type="text/javascript"></script>
 <script src="alephbet.min.js"></script>
@@ -197,11 +232,11 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
         writeKey: "ENTER YOUR WRITE KEY"
     });
     var tracking_adapter = {
-        experiment_start: function(experiment_name, variant) {
-            keen_client.addEvent(experiment_name, {variant: variant, event: 'participate'});
+        experiment_start: function(experiment, variant) {
+            keen_client.addEvent(experiment.name, {variant: variant, event: 'participate'});
         },
-        goal_complete: function(experiment_name, variant, event_name) {
-            keen_client.addEvent(experiment_name, {variant: variant, event: event_name});
+        goal_complete: function(experiment, variant, event_name, _props) {
+            keen_client.addEvent(experiment.name, {variant: variant, event: event_name});
         }
     };
     var my_experiment = new AlephBet.Experiment({
