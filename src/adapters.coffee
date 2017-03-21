@@ -178,8 +178,8 @@ class Adapters
     @experiment_start: (experiment, variant) =>
       @_track(@namespace, "#{experiment.name} | #{variant}", 'Visitors')
 
-    @goal_complete: (experiment, variant, goal, _props) =>
-      @_track(@namespace, "#{experiment.name} | #{variant}", goal)
+    @goal_complete: (experiment, variant, goal_name, _props) =>
+      @_track(@namespace, "#{experiment.name} | #{variant}", goal_name)
 
 
   class @LocalStorageAdapter

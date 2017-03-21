@@ -143,7 +143,11 @@ This allows experiment to work across devices on a per-user basis.
 ```javascript
 var button_color_experiment = new AlephBet.Experiment({
   name: 'button color',
-  user_id: 'my_user_id',  // pass over the unique user id bound to this experiment
+  user_id: get_user_id(),  // pass over the unique user id bound to this experiment
+  trigger: function() {
+    // do not trigger this expeirment without a user_id
+    return get_user_id() && other_condition();
+  },
   variants: {  // variants for this experiment; required.
     blue: {
       activate: function() {  // activate function to execute if variant is selected
@@ -157,15 +161,19 @@ var button_color_experiment = new AlephBet.Experiment({
     }
   },
 });
+
+// do not assign goals without a user_id
+if (get_user_id()) {
+  button_color_experiment.add_goal(my_goal);
+}
 ```
 
 Notes:
 
-* For user-based tracking, make sure you *always* have a user_id. Do not mix visitors (without an id) and users in the same experiment.
+* For user-based tracking, make sure you *always* have a user_id. Do not mix visitors (without an id) and users (with an id) in the same experiment.
 * Cross-device tracking only works with the [Gimel](https://github.com/Alephbet/gimel) or keen.io tracking backends. It does not work with Google Analytics.
 
-
-See #16 for more information
+See this [Wiki page](https://github.com/Alephbet/alephbet/wiki/User-based-and-Cross-device-tracking) for more information
 
 ### Goals
 
