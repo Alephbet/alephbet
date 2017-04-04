@@ -1,4 +1,4 @@
-* 0.15.0-rc.1 BREAKING changes (only if you wrote your own tracking adapter)
+* 0.15.0 BREAKING changes (only if you wrote your own tracking adapter)
     - User-based / Cross-device tracking
     - If you use your own tracking adapter, you'll have to change it.
       * `experiment_start` now expects `experiment` as the first parameter
