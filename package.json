@@ -1,6 +1,6 @@
 {
   "name": "alephbet",
-  "version": "0.14.4",
+  "version": "0.15.0-rc.1",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "browser": {
     "lodash.custom": "./vendor/lodash.custom.min.js"
@@ -20,7 +20,8 @@
   "dependencies": {
     "lodash": "^3.9.3",
     "store": "~1.3.17",
-    "node-uuid": "1.4.2"
+    "node-uuid": "1.4.2",
+    "crypto-js": "3.1.9-1"
   },
   "devDependencies": {
     "browserify": "~10.2.3",
@@ -33,13 +34,13 @@
     "sinon": "^1.17.3"
   },
   "scripts": {
-    "lodash-custom": "lodash -p include=keys,defaults,remove exports=node -o ./vendor/lodash.custom.min.js",
+    "lodash-custom": "lodash -p include=keys,defaults,remove,omit exports=node -o ./vendor/lodash.custom.min.js",
     "build-debug": "browserify --extension='.coffee' src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js",
     "build-min": "browserify --extension='.coffee' src/alephbet.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
     "build": "npm run coffeefy && npm run lodash-custom && npm run build-debug && npm run build-min",
 	"coffeefy": "coffee -c -o lib src",
     "test-standalone": "browserify --extension='.coffee' test/alephbet_test.coffee > test/bundle.js && echo '<script src=\"bundle.js\"></script>' > test/test.html",
-    "test": "browserify --extension='.coffee' test/alephbet_test.coffee | tape-run",
+    "test": "browserify --extension='.coffee' test/*_test.coffee | tape-run",
     "watch": "watchify src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js -v"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
