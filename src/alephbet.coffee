@@ -67,6 +67,18 @@ class AlephBet
       @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
+      variants_has_weight = utils.checkWeights(@variants).every (contains_weight) -> contains_weight
+      utils.log("all variants has weight: #{variants_has_weight}")
+      if variants_has_weight then @pick_unweighted_variant() else @pick_weighted_variant()
+
+    pick_weighted_variant: ->
+      utils.log("picking weighted variant")
+      weightedIndex = Math.floor(Math.random() * 100)
+      for key, value of @variants
+        weightedIndex -= value.weight
+        return key if weightedIndex < 0
+
+    pick_unweighted_variant: ->
       partitions = 1.0 / @variant_names.length
       chosen_partition = Math.floor(@_random('variant') / partitions)
       variant = @variant_names[chosen_partition]
