@@ -69,7 +69,7 @@ class AlephBet
     pick_variant: ->
       variants_has_weight = utils.checkWeights(@variants).every (contains_weight) -> contains_weight
       utils.log("all variants has weight: #{variants_has_weight}")
-      if variants_has_weight then @pick_unweighted_variant() else @pick_weighted_variant()
+      if variants_has_weight then @pick_weighted_variant() else @pick_unweighted_variant()
 
     pick_weighted_variant: ->
       utils.log("picking weighted variant")
