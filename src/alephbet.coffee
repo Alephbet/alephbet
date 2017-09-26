@@ -67,16 +67,32 @@ class AlephBet
       @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
+      # we are checking that all variants of experiment has weights
       variants_has_weight = utils.checkWeights(@variants).every (contains_weight) -> contains_weight
       utils.log("all variants has weight: #{variants_has_weight}")
+      # if all variants has weights than we should fire version for variants with weight
       if variants_has_weight then @pick_weighted_variant() else @pick_unweighted_variant()
 
     pick_weighted_variant: ->
-      utils.log("picking weighted variant")
+
+      # Choosing a weighted variant:
+      # For A, B, C with weights 10, 30, 60
+      # variants = A, B, C
+      # weights = 10, 30, 60
+      # weightSum = 100
+      # weightedIndex = 21 (random number between 0 and weight sum)
+      # ABBBCCCCCC - (every letter occurence should by multiplied by 10)
+      # =======^
+      # Select C
+
+      # I'm assuming that all weights will sum up to 100
+      # then I pick random number from 0 - 100
       weightedIndex = Math.floor(Math.random() * 100)
       for key, value of @variants
+        # then we are substracting variant weight from selected number
+        # and it it reaches 0 (or below) we are selecting this variant
         weightedIndex -= value.weight
-        return key if weightedIndex < 0
+        return key if weightedIndex <= 0
 
     pick_unweighted_variant: ->
       partitions = 1.0 / @variant_names.length

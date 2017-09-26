@@ -21,6 +21,5 @@ class Utils
   @checkWeights: (variants) ->
     @weightExists value for key, value of variants
   @weightExists: (variant) ->
-    @log("variant.weight: #{variant.weight}")
     variant.weight
 module.exports = Utils
