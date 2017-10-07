@@ -85,7 +85,7 @@ class AlephBet
       # =======^
       # Select C
       weights_sum = utils.sumWeights(@variants)
-      weighted_index = Math.floor(@_random('variant') * 100)
+      weighted_index = Math.floor((@_random('variant') * 100) + 1 )
       for key, value of @variants
         # then we are substracting variant weight from selected number
         # and it it reaches 0 (or below) we are selecting this variant
