@@ -6,6 +6,7 @@ AlephBet is a pure-javascript A/B (multivariate) testing framework for developer
 
 Key Features:
 
+* **COMING SOON**: Weighted variants. See https://github.com/Alephbet/alephbet/issues/20
 * **NEW**: user-based / cross-device experiments. See https://github.com/Alephbet/alephbet/issues/16
 * **NEW**: run your own tracking backend on AWS Lambda with [Gimel](https://github.com/Alephbet/gimel) (recommended)
 * Pluggable backends: event tracking (defaults to Google Universal Analytics), and storage (defaults to
