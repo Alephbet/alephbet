@@ -67,6 +67,32 @@ class AlephBet
       @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
+      # we are checking that all variants of experiment has weights
+      all_variants_have_weights = utils.checkWeights(@variants)
+      utils.log("all variants has weight: #{all_variants_have_weights}")
+      # if all variants has weights than we should fire version for variants with weight
+      if all_variants_have_weights then @pick_weighted_variant() else @pick_unweighted_variant()
+
+    pick_weighted_variant: ->
+
+      # Choosing a weighted variant:
+      # For A, B, C with weights 10, 30, 60
+      # variants = A, B, C
+      # weights = 10, 30, 60
+      # weights_sum = 100 (sum of weights)
+      # weighted_index = 21 (random number between 0 and weight sum)
+      # ABBBCCCCCC - (every letter occurence should by multiplied by 10)
+      # =======^
+      # Select C
+      weights_sum = utils.sumWeights(@variants)
+      weighted_index = Math.floor((@_random('variant') * weights_sum) + 1 )
+      for key, value of @variants
+        # then we are substracting variant weight from selected number
+        # and it it reaches 0 (or below) we are selecting this variant
+        weighted_index -= value.weight
+        return key if weighted_index <= 0
+
+    pick_unweighted_variant: ->
       partitions = 1.0 / @variant_names.length
       chosen_partition = Math.floor(@_random('variant') / partitions)
       variant = @variant_names[chosen_partition]
@@ -99,7 +125,8 @@ class AlephBet
       throw 'an experiment name must be specified' if @options.name is null
       throw 'variants must be provided' if @options.variants is null
       throw 'trigger must be a function' if typeof @options.trigger isnt 'function'
-
+      every_variant_has_weight = utils.validateWeights @options.variants
+      throw 'not all variants contains weight' if !every_variant_has_weight
 
   class @Goal
     constructor: (@name, @props={}) ->
