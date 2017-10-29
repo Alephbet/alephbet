@@ -104,9 +104,9 @@ describe 'tracks non unique goals', (t) ->
   t.assert(tracking.goal_complete.callCount == 2, 'goal_complete was called twice')
   t.notOk(storage.get('with-goals:my goal'), 'goal not stored')
 
-describe 'when all variants has weights', (t) ->
+describe 'when all variants have weights', (t) ->
   ex = experiment({
-    name: 'with-weights',
+    name: 'with-weights'
     variants:
       blue:
         weight: 0
@@ -119,9 +119,25 @@ describe 'when all variants has weights', (t) ->
   t.assert(ex.pick_variant() == 'green', 'always picks green variant')
   t.assert(ex.pick_variant() != 'blue', 'never picks blue variant')
 
-describe 'when only some variants has weights', (t) ->
+describe 'when all variants have weights (with user_id)', (t) ->
+  ex = experiment({
+    user_id: 'yuzu'
+    variants:
+      blue:
+        weight: 20
+        activate: activate
+      red:
+        weight: 80
+        activate: activate
+  })
+  t.plan(2)
+  t.assert(ex.pick_variant() == 'blue', 'always picks blue variant')
+  ex.user_id = 'gosho'
+  t.assert(ex.pick_variant() == 'red', 'always picks red variant')
+
+describe 'when only some variants have weights', (t) ->
   try ex = experiment({
-    name: 'not-all-weights',
+    name: 'not-all-weights'
     variants:
       blue:
         activate: activate
@@ -131,4 +147,4 @@ describe 'when only some variants has weights', (t) ->
   })
   catch e then t.assert(true, 'creating experiment should throw error')
   t.plan(2)
-  t.assert(activate.callCount == 0, 'activate function shouldn\'t be called')
+  t.assert(activate.callCount == 0, "activate function shouldn't be called")

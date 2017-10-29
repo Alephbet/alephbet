@@ -4,68 +4,73 @@ _ = require('lodash')
 Utils = require('../src/utils')
 
 setup = ->
-  utils = new Utils();
+  utils = new Utils()
 
 describe = (description, fn) ->
   test description, (t) ->
     setup()
     fn(t)
 
-describe 'utils - checkWeights', (t) ->
+describe 'utils - check_weights', (t) ->
   variants = {
     a:
       weight: 50
     b:
       weight: 50
   }
-  all_has_weight = Utils.checkWeights(variants);
+  all_have_weights = Utils.check_weights(variants)
   variants = {
     a: {}
     b: {}
   }
-  none_has_weight = Utils.checkWeights(variants);
+  none_have_weights = Utils.check_weights(variants)
   variants = {
     a:
       weight: 20
     b: {}
   }
-  some_has_weight = Utils.checkWeights(variants);
+  some_have_weights = Utils.check_weights(variants)
   t.plan(3)
-  t.assert(all_has_weight == true, 'all variants contains weight')
-  t.assert(none_has_weight == false, 'variants does not contain weights')
-  t.assert(some_has_weight == false, 'only some variants does not have weight')
+  t.assert(all_have_weights == true, 'all variants have weight')
+  t.assert(none_have_weights == false, 'no variants have weights')
+  t.assert(some_have_weights == false, 'only some variants have weight')
 
-describe 'utils - sumWeights', (t) ->
+describe 'utils - sum_weights', (t) ->
+  default_sum = Utils.sum_weights({})
   variants = {
     a:
       weight: 55
     b:
       weight: 35
   }
-  sum = Utils.sumWeights(variants);
-  t.plan(1)
-  t.assert(sum == 90, 'sum should be equal 90')
+  sum_with_weights = Utils.sum_weights(variants)
+  variants.b = {}
+  sum_with_missing_weights = Utils.sum_weights(variants)
+  t.plan(3)
+  t.assert(default_sum == 0, 'sum should be 0 with no weights')
+  t.assert(sum_with_weights == 90, 'sum is 90 with all weights')
+  t.assert(sum_with_missing_weights == 55, 'sum is 55 with some weights')
 
-describe 'utils - validateWeights', (t) ->
+describe 'utils - validate_weights', (t) ->
   variants = {
     a:
       weight: 55
     b:
       weight: 35
   }
-  all_valid = Utils.validateWeights(variants);
+  all_have_weights = Utils.validate_weights(variants)
   variants = {
     a:
       weight: 55
     b: {}
   }
-  some_valid = Utils.validateWeights(variants);
+  some_have_weights = Utils.validate_weights(variants)
   variants = {
     a: {}
     b: {}
   }
-  all_not_have_weight = Utils.validateWeights(variants);
+  none_have_weights = Utils.validate_weights(variants)
   t.plan(3)
-  t.assert(all_valid == true, 'all should be valid')
-  t.assert(some_valid == false, 'only some are valid')
-  t.assert(all_not_have_weight == true, 'all does not contain weight but are valid')
+  t.assert(all_have_weights == true, 'all have weights is valid')
+  t.assert(some_have_weights == false, 'only some have weights is invalid')
+  t.assert(none_have_weights == true, 'none have weights is valid')
