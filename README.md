@@ -6,7 +6,7 @@ AlephBet is a pure-javascript A/B (multivariate) testing framework for developer
 
 Key Features:
 
-* **COMING SOON**: Weighted variants. See https://github.com/Alephbet/alephbet/issues/20
+* **NEW**: Weighted variants. See https://github.com/Alephbet/alephbet/pull/20
 * **NEW**: user-based / cross-device experiments. See https://github.com/Alephbet/alephbet/issues/16
 * **NEW**: run your own tracking backend on AWS Lambda with [Gimel](https://github.com/Alephbet/gimel) (recommended)
 * Pluggable backends: event tracking (defaults to Google Universal Analytics), and storage (defaults to
@@ -128,6 +128,15 @@ var big_header_experiment = new AlephBet.Experiment({
 ### Sample size
 
 You can specify a `sample` float (between 0.0 and 1.0) to limit the number of visitors participating in an experiment.
+
+### Weights
+
+Whilst `sample` will limit the entire experiment to a subset of potential participants, `weight` allows
+you to apply a weighted-random selection of variants. This can be considered a first step (manual) way
+to implement [Multi Armed Bandit testing](https://conversionxl.com/blog/bandit-tests/).
+
+NOTE: Weights can be any integer value. **Do not use floats**. You can use any number, but it's probably easiest
+      to treat it as a percentage, e.g. use weights of 80, 20 to allocate ~80% to one variant vs. ~20% to the other.
 
 ### Visitors
 
