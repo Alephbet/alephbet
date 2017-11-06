@@ -120,11 +120,11 @@ class AlephBet
     tracking: -> @options.tracking_adapter
 
     _validate = ->
-      throw 'an experiment name must be specified' if @options.name is null
-      throw 'variants must be provided' if @options.variants is null
-      throw 'trigger must be a function' if typeof @options.trigger isnt 'function'
+      throw new Error('an experiment name must be specified') if @options.name is null
+      throw new Error('variants must be provided') if @options.variants is null
+      throw new Error('trigger must be a function') if typeof @options.trigger isnt 'function'
       all_variants_have_weights = utils.validate_weights @options.variants
-      throw 'not all variants have weights' if !all_variants_have_weights
+      throw new Error('not all variants have weights') if !all_variants_have_weights
 
   class @Goal
     constructor: (@name, @props={}) ->

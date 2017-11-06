@@ -3,7 +3,7 @@ store = require('store')
 # a thin wrapper around store.js for easy swapping
 class Storage
   constructor: (@namespace='alephbet') ->
-    throw 'local storage not supported' unless store.enabled
+    throw new Error('local storage not supported') unless store.enabled
     @storage = store.get(@namespace) || {}
   set: (key, value) ->
     @storage[key] = value
