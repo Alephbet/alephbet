@@ -59,13 +59,14 @@ describe 'starts the experiment', (t) ->
 describe 'validates experiment parameters', (t) ->
   t.throws (->
     new AlephBet.Experiment()
-  ), new Error('an experiment name must be specified')
+  ), new Error('an experiment name must be specified'), 'experiment name must be specified'
   t.throws (->
     new AlephBet.Experiment(name: 'Test')
-  ), new Error('variants must be provided')
+  ), new Error('variants must be provided'), 'variants must be provided'
   t.throws (->
     new AlephBet.Experiment(name: 'Test', variants: {})
-  ), new Error('trigger must be a function')
+  ), new Error('trigger must be a function'), 'trigger must be a function'
+
   t.end()
 
 describe 'deterministic variant with a given user_id', (t) ->
