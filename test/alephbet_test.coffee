@@ -56,6 +56,18 @@ describe 'starts the experiment', (t) ->
   t.assert(activate.calledWith(ex), 'was called with experiment')
   t.assert(tracking.experiment_start.callCount == 1, 'experiment_start tracking was called once')
 
+describe 'validates experiment parameters', (t) ->
+  t.throws (->
+    new AlephBet.Experiment()
+  ), new Error('an experiment name must be specified')
+  t.throws (->
+    new AlephBet.Experiment(name: 'Test')
+  ), new Error('variants must be provided')
+  t.throws (->
+    new AlephBet.Experiment(name: 'Test', variants: {})
+  ), new Error('trigger must be a function')
+  t.end()
+
 describe 'deterministic variant with a given user_id', (t) ->
   ex = experiment({user_id: 'yuzu'})
   t.plan(2)

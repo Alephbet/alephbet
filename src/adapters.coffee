@@ -100,7 +100,7 @@ class Adapters
         @_storage.set(@queue_name, JSON.stringify(@_queue))
 
     _flush: ->
-      throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
+      throw new Error('ga not defined. Please make sure your Universal analytics is set up correctly') if typeof ga isnt 'function'
       for item in @_queue
         callback = @_remove_uuid(item.uuid)
         ga('send', 'event', item.category, item.action, item.label, {'hitCallback': callback, 'nonInteraction': 1})
@@ -172,7 +172,7 @@ class Adapters
 
     @_track: (category, action, label) ->
       utils.log("Google Universal Analytics track: #{category}, #{action}, #{label}")
-      throw 'ga not defined. Please make sure your Universal analytics is set up correctly' if typeof ga isnt 'function'
+      throw new Error('ga not defined. Please make sure your Universal analytics is set up correctly') if typeof ga isnt 'function'
       ga('send', 'event', category, action, label, {'nonInteraction': 1})
 
     @experiment_start: (experiment, variant) =>
