@@ -1,3 +1,5 @@
+* 0.17.1 throwing real errors (contributed by @joker-777)
+
 * 0.17.0 added weight option (contributed by @szymansd)
     - you can now add a `weight` key to your variants
       and the random pick will be weighted accordingly.
