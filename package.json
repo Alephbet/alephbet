@@ -2,9 +2,6 @@
   "name": "alephbet",
   "version": "0.17.2",
   "author": "Yoav Aner <yoav@gingerlime.com>",
-  "browser": {
-    "lodash.custom": "./vendor/lodash.custom.min.js"
-  },
   "files": [
     "lib",
     "dist",
@@ -14,7 +11,7 @@
   ],
   "browserify": {
     "transform": [
-	  "coffeeify"
+      "coffeeify"
     ]
   },
   "dependencies": {
@@ -38,7 +35,7 @@
     "build-debug": "browserify --extension='.coffee' src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js",
     "build-min": "browserify --extension='.coffee' src/alephbet.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
     "build": "npm run coffeefy && npm run lodash-custom && npm run build-debug && npm run build-min",
-	"coffeefy": "coffee -c -o lib src",
+    "coffeefy": "coffee -c -o lib src",
     "test-standalone": "browserify --extension='.coffee' test/alephbet_test.coffee > test/bundle.js && echo '<script src=\"bundle.js\"></script>' > test/test.html",
     "test": "browserify --extension='.coffee' test/*_test.coffee | tape-run",
     "watch": "watchify src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js -v"
