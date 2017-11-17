@@ -132,21 +132,6 @@ describe 'when all variants have weights', (t) ->
   t.assert(ex.pick_variant() == 'green', 'always picks green variant')
   t.assert(ex.pick_variant() != 'blue', 'never picks blue variant')
 
-describe 'when all variants have triggers', (t) ->
-  ex = experiment({
-    name: 'with-triggers'
-    variants:
-      blue:
-        trigger: -> false
-        activate: activate
-      green:
-        trigger: -> true
-        activate: activate
-  })
-  t.plan(2)
-  t.assert(ex.pick_variant() == 'green', 'always picks green variant')
-  t.assert(ex.pick_variant() != 'blue', 'never picks blue variant')
-
 describe 'when all variants have weights (with user_id)', (t) ->
   ex = experiment({
     user_id: 'yuzu'
@@ -163,23 +148,6 @@ describe 'when all variants have weights (with user_id)', (t) ->
   ex.user_id = 'gosho'
   t.assert(ex.pick_variant() == 'red', 'always picks red variant')
 
-describe 'when all variants have triggers (with user_id)', (t) ->
-  changed = { test: true }
-  ex = experiment({
-    user_id: 'yuzu'
-    variants:
-      blue:
-        trigger: -> changed.test
-        activate: activate
-      red:
-        trigger: -> !changed.test
-        activate: activate
-  })
-  t.plan(2)
-  t.assert(ex.pick_variant() == 'blue', 'always picks blue variant')
-  changed.test = false
-  t.assert(ex.pick_variant() == 'red', 'always picks red variant')
-
 describe 'when only some variants have weights', (t) ->
   try ex = experiment({
     name: 'not-all-weights'
@@ -193,3 +161,35 @@ describe 'when only some variants have weights', (t) ->
   catch e then t.assert(true, 'creating experiment should throw error')
   t.plan(2)
   t.assert(activate.callCount == 0, "activate function shouldn't be called")
+
+
+describe 'when all variants have triggers', (t) ->
+  ex = experiment({
+    name: 'with-triggers'
+    variants:
+      blue:
+        trigger: -> false
+        activate: activate
+      green:
+        trigger: -> true
+        activate: activate
+  })
+  t.plan(2)
+  t.assert(ex.pick_variant() == 'green', 'always picks green variant')
+  t.assert(ex.pick_variant() != 'blue', 'never picks blue variant')
+
+describe 'when all variants have triggers (changing variant)', (t) ->
+  changed = { test: true }
+  ex = experiment({
+    variants:
+      blue:
+        trigger: -> changed.test
+        activate: activate
+      red:
+        trigger: -> !changed.test
+        activate: activate
+  })
+  t.plan(2)
+  t.assert(ex.pick_variant() == 'blue', 'always picks blue variant')
+  changed.test = false
+  t.assert(ex.pick_variant() == 'red', 'always picks red variant')
