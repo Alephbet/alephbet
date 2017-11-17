@@ -22,6 +22,10 @@ class Utils
     contains_weight = []
     contains_weight.push(value.weight?) for key, value of variants
     contains_weight.every (has_weight) -> has_weight
+  @check_triggers: (variants) ->
+    contains_trigger = []
+    contains_trigger.push(value.trigger?) for key, value of variants
+    contains_trigger.every (has_trigger) -> has_trigger
   @sum_weights: (variants) ->
     sum = 0
     for key, value of variants
@@ -31,4 +35,8 @@ class Utils
     contains_weight = []
     contains_weight.push(value.weight?) for key, value of variants
     contains_weight.every (has_weight) -> has_weight or contains_weight.every (has_weight) -> !has_weight
+  @validate_triggers: (variants) ->
+    contains_trigger = []
+    contains_trigger.push(value.trigger?) for key, value of variants
+    contains_trigger.every (has_trigger) -> has_trigger or contains_trigger.every (has_trigger) -> !has_trigger
 module.exports = Utils
