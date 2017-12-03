@@ -24,7 +24,7 @@
     "browserify": "~10.2.3",
     "coffeeify": "~1.1.0",
     "lodash-cli": "^3.9.3",
-    "uglify-js": "2.4.23",
+    "uglify-js": "2.6.0",
     "watchify": "^3.2.2",
     "coffeetape": "^1.0.1",
     "tape-run": "^2.1.4",
