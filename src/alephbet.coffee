@@ -67,9 +67,16 @@ class AlephBet
       @storage().get("#{@options.name}:variant")
 
     pick_variant: ->
+      all_variants_have_triggers = utils.check_triggers(@variants)
       all_variants_have_weights = utils.check_weights(@variants)
       utils.log("all variants have weights: #{all_variants_have_weights}")
-      if all_variants_have_weights then @pick_weighted_variant() else @pick_unweighted_variant()
+      if all_variants_have_weights then @pick_weighted_variant() 
+      else if all_variants_have_triggers then @pick_triggered_variant()
+      else @pick_unweighted_variant()
+
+    pick_triggered_variant: ->
+      for key, value of @variants
+        return key if value.trigger()
 
     pick_weighted_variant: ->
 
@@ -125,6 +132,8 @@ class AlephBet
       throw new Error('trigger must be a function') if typeof @options.trigger isnt 'function'
       all_variants_have_weights = utils.validate_weights @options.variants
       throw new Error('not all variants have weights') if !all_variants_have_weights
+      all_variants_have_triggers = utils.validate_triggers @options.variants
+      throw new Error('not all variants have triggers') if !all_variants_have_triggers
 
   class @Goal
     constructor: (@name, @props={}) ->
