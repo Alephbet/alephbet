@@ -53,12 +53,14 @@ var button_color_experiment = new AlephBet.Experiment({
     blue: {
       activate: function() {  // activate function to execute if variant is selected
         $('#my-btn').attr('style', 'color: blue;');
-      }
+      },
+      weight: 50 // optional, can be any integer value
     },
     red: {
       activate: function() {
         $('#my-btn').attr('style', 'color: red;');
-      }
+      },
+      weight: 50
     }
   },
 });
