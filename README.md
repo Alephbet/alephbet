@@ -138,6 +138,26 @@ to implement [Multi Armed Bandit testing](https://conversionxl.com/blog/bandit-t
 NOTE: Weights can be any integer value. **Do not use floats**. You can use any number, but it's probably easiest
       to treat it as a percentage, e.g. use weights of 80, 20 to allocate ~80% to one variant vs. ~20% to the other.
 
+```
+var button_color_experiment = new AlephBet.Experiment({
+  name: 'button color',  // the name of this experiment; required.
+  variants: {  // variants for this experiment; required.
+    blue: {
+      activate: function() {  // activate function to execute if variant is selected
+        $('#my-btn').attr('style', 'color: blue;');
+      },
+      weight: 50 // optional, can be any integer value
+    },
+    red: {
+      activate: function() {
+        $('#my-btn').attr('style', 'color: red;');
+      },
+      weight: 50
+    }
+  },
+});
+```
+
 ### Visitors
 
 Visitors will be tracked once they participate in an experiment (and only once). Once a visitor participates in an
