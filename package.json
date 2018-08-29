@@ -1,6 +1,6 @@
 {
   "name": "alephbet",
-  "version": "0.17.3",
+  "version": "0.17.4",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "files": [
     "lib",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "lodash": "^3.9.3",
-    "store": "~2.0.12",
+    "basil.js": "~0.4.10",
     "node-uuid": "1.4.2",
     "crypto-js": "3.1.9-1"
   },

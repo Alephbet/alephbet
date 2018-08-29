@@ -1,9 +1,9 @@
-store = require('store')
+Basil = require('basil.js')
+store = Basil.new
 
-# a thin wrapper around store.js for easy swapping
+# a thin wrapper around basil.js for easy swapping
 class Storage
   constructor: (@namespace='alephbet') ->
-    throw new Error('local storage not supported') unless store.enabled
     @storage = store.get(@namespace) || {}
   set: (key, value) ->
     @storage[key] = value
