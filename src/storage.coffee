@@ -1,5 +1,5 @@
 Basil = require('basil.js')
-store = Basil.new
+store = new Basil
 
 # a thin wrapper around basil.js for easy swapping
 class Storage
