@@ -78,10 +78,10 @@ class Adapters
       @_storage.set(@queue_name, JSON.stringify(@_queue))
       @_flush()
 
-    experiment_start: (experiment, variant) =>
+    experiment_start: (experiment, variant) ->
       @_track(experiment, variant, {name: 'participate', unique: true})
 
-    goal_complete: (experiment, variant, goal_name, props) =>
+    goal_complete: (experiment, variant, goal_name, props) ->
       @_track(experiment, variant, utils.defaults({name: goal_name}, props))
 
 
@@ -112,10 +112,10 @@ class Adapters
       @_storage.set(@queue_name, JSON.stringify(@_queue))
       @_flush()
 
-    experiment_start: (experiment, variant) =>
+    experiment_start: (experiment, variant) ->
       @_track(@namespace, "#{experiment.name} | #{variant}", 'Visitors')
 
-    goal_complete: (experiment, variant, goal_name, _props) =>
+    goal_complete: (experiment, variant, goal_name, _props) ->
       @_track(@namespace, "#{experiment.name} | #{variant}", goal_name)
 
 
@@ -160,10 +160,10 @@ class Adapters
       @_storage.set(@queue_name, JSON.stringify(@_queue))
       @_flush()
 
-    experiment_start: (experiment, variant) =>
+    experiment_start: (experiment, variant) ->
       @_track(experiment, variant, {name: 'participate', unique: true})
 
-    goal_complete: (experiment, variant, goal_name, props) =>
+    goal_complete: (experiment, variant, goal_name, props) ->
       @_track(experiment, variant, utils.defaults({name: goal_name}, props))
 
 
@@ -175,10 +175,10 @@ class Adapters
       throw new Error('ga not defined. Please make sure your Universal analytics is set up correctly') if typeof ga isnt 'function'
       ga('send', 'event', category, action, label, {'nonInteraction': 1})
 
-    @experiment_start: (experiment, variant) =>
+    @experiment_start: (experiment, variant) ->
       @_track(@namespace, "#{experiment.name} | #{variant}", 'Visitors')
 
-    @goal_complete: (experiment, variant, goal_name, _props) =>
+    @goal_complete: (experiment, variant, goal_name, _props) ->
       @_track(@namespace, "#{experiment.name} | #{variant}", goal_name)
 
 

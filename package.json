@@ -15,30 +15,34 @@
     ]
   },
   "dependencies": {
-    "lodash": "^3.9.3",
     "basil.js": "~0.4.10",
-    "node-uuid": "1.4.2",
-    "crypto-js": "3.1.9-1"
+    "crypto-js": "3.1.9-1",
+    "lodash": "^4.7.15",
+    "node-uuid": "1.4.2"
   },
   "devDependencies": {
-    "browserify": "~10.2.3",
-    "coffeeify": "~1.1.0",
-    "lodash-cli": "^3.9.3",
-    "uglify-js": "2.6.0",
-    "watchify": "^3.2.2",
-    "coffeetape": "^1.0.1",
-    "tape-run": "^2.1.4",
-    "sinon": "^1.17.3"
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.5.5",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.4.1",
+    "coffeetape": "^2.0.0",
+    "lodash-cli": "^4.7.15",
+    "sinon": "^7.4.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.8.0",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7",
+    "webpack-tape-run": "0.0.7"
   },
   "scripts": {
     "lodash-custom": "lodash -p include=keys,defaults,remove,omit exports=node -o ./vendor/lodash.custom.min.js",
-    "build-debug": "browserify --extension='.coffee' src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js",
-    "build-min": "browserify --extension='.coffee' src/alephbet.coffee --standalone AlephBet | uglifyjs -c > dist/alephbet.min.js",
-    "build": "npm run coffeefy && npm run lodash-custom && npm run build-debug && npm run build-min",
-    "coffeefy": "coffee -c -o lib src",
-    "test-standalone": "browserify --extension='.coffee' test/alephbet_test.coffee > test/bundle.js && echo '<script src=\"bundle.js\"></script>' > test/test.html",
-    "test": "browserify --extension='.coffee' test/*_test.coffee | tape-run",
-    "watch": "watchify src/alephbet.coffee -d --standalone AlephBet -o dist/alephbet.js -v"
+    "build-debug": "webpack --config webpack.config.coffee --mode development",
+    "build-min": "webpack --config webpack.config.coffee --mode production",
+    "build": "npm run lodash-custom && npm run build-debug && npm run build-min",
+    "test-standalone": "npm run test ; echo '<script src=\"bundle.js\"></script>' > test/test.html",
+    "test": "webpack --config webpack.test.config.coffee",
+    "watch": "webpack --config webpack.config.coffee --watch --mode development"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
   "main": "lib/alephbet.js",

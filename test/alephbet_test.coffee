@@ -24,9 +24,9 @@ class TestTracking
 setup = ->
   storage = new TestStorage
   tracking = new TestTracking
-  activate.reset()
-  tracking.experiment_start.reset()
-  tracking.goal_complete.reset()
+  activate.resetHistory()
+  tracking.experiment_start.resetHistory()
+  tracking.goal_complete.resetHistory()
 
   default_options =
     name: 'experiment'

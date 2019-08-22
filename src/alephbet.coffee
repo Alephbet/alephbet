@@ -109,10 +109,10 @@ class AlephBet
       seed = "#{@name}.#{salt}.#{@user_id}"
       utils.random(seed)
 
-    add_goal: (goal) =>
+    add_goal: (goal) ->
       goal.add_experiment(this)
 
-    add_goals: (goals) =>
+    add_goals: (goals) ->
       @add_goal(goal) for goal in goals
 
     storage: -> @options.storage_adapter
