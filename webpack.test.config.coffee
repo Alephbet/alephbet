@@ -25,7 +25,7 @@ module.exports =
   plugins: [
     new webpackTapeRun(
       tapeRun: {}
-      reporter: "tap-spec"
+      # reporter: "tap-spec"
     )
   ]
   module:
