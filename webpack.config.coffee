@@ -15,6 +15,7 @@ module.exports = (env, argv) ->
     filename: file_name(argv.mode)
     path: path.resolve(__dirname, "dist")
     library: "AlephBet"
+    libraryTarget: "umd"
   watchOptions:
     ignored: [
       /node_modules/
