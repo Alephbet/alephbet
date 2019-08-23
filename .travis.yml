@@ -2,10 +2,8 @@ language: node_js
 node_js:
   - "10"
 addons:
-  apt:
-    packages:
-      - xvfb
+  chrome: stable
+before_install:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   - npm install
