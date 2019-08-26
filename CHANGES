@@ -1,3 +1,6 @@
+* 0.18.0 moving from browserify to webpack
+         and upgrading dependencies to latest versions
+
 * 0.17.4 swap store with basil.js
 
 * 0.17.3 use relative path (contributed by @rbalicki2)
