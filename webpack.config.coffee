@@ -8,8 +8,6 @@ file_name = (mode) ->
 
 module.exports = (env, argv) ->
   target: "web"
-  node:
-    fs: "empty"
   entry: "./src/alephbet.coffee"
   output:
     filename: file_name(argv.mode)
@@ -37,7 +35,6 @@ module.exports = (env, argv) ->
         loader: "coffee-loader"
         options:
           transpile:
-            plugins: [ "@babel/plugin-syntax-dynamic-import" ]
             presets: [ "@babel/preset-env" ]
       ]
     ]

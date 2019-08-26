@@ -35,7 +35,6 @@ module.exports =
         loader: "coffee-loader"
         options:
           transpile:
-            plugins: [ "@babel/plugin-syntax-dynamic-import" ]
             presets: [ "@babel/preset-env" ]
       ]
     ]
