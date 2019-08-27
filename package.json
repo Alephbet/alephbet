@@ -1,6 +1,6 @@
 {
   "name": "alephbet",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "files": [
     "lib",
@@ -44,7 +44,7 @@
     "watch": "webpack --config webpack.config.coffee --watch --mode development"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
-  "main": "alephbet",
+  "main": "dist/alephbet.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alephbet/alephbet.git"
