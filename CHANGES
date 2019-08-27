@@ -1,3 +1,5 @@
+* 0.18.2 removed source maps from minified version
+
 * 0.18.1 changed main to point to dist/alephbet.min.js
 
 * 0.18.0 moving from browserify to webpack
