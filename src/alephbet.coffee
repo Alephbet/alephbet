@@ -31,11 +31,11 @@ class AlephBet
 
     @property 'user_id',
       get: ->
-        console.log('getter user_id', @_user_id, typeof @_user_id is 'function')
+        utils.log(['getter user_id', @_user_id, typeof @_user_id is 'function'])
         if typeof @_user_id is 'function' then return @_user_id();
         return @_user_id;
       set: (value) ->
-        console.log('setter user_id')
+        utils.log('setter user_id')
         @_user_id = value
 
     run: ->
