@@ -20,7 +20,7 @@ class AlephBet
       tracking_adapter: adapters.GoogleUniversalAnalyticsAdapter
       storage_adapter: adapters.LocalStorageAdapter
 
-    constructor: (@options={}) ->
+    constructor: (@options = {}) ->
       utils.defaults(@options, Experiment._options)
       _validate.call(this)
       @name = @options.name
@@ -29,10 +29,17 @@ class AlephBet
       @variant_names = utils.keys(@variants)
       _run.call(this)
 
+    @property 'user_id',
+      get: ->
+        if typeof @_user_id is 'function' then return @_user_id();
+        return @_user_id;
+      set: (value) ->
+        @_user_id = value
+
     run: ->
       utils.log("running with options: #{JSON.stringify(@options)}")
       if variant = @get_stored_variant()
-        # a variant was already chosen. activate it
+# a variant was already chosen. activate it
         utils.log("#{variant} active")
         @activate_variant(variant)
       else
@@ -44,7 +51,7 @@ class AlephBet
       @variants[variant]?.activate(this)
       @storage().set("#{@options.name}:variant", variant)
 
-    # if experiment conditions match, pick and activate a variant, track experiment start
+# if experiment conditions match, pick and activate a variant, track experiment start
     conditionally_activate_variant: ->
       return unless @options.trigger()
       utils.log('trigger set')
@@ -54,7 +61,7 @@ class AlephBet
       @tracking().experiment_start(this, variant)
       @activate_variant(variant)
 
-    goal_complete: (goal_name, props={}) ->
+    goal_complete: (goal_name, props = {}) ->
       utils.defaults(props, {unique: true})
       return if props.unique && @storage().get("#{@options.name}:#{goal_name}")
       variant = @get_stored_variant()
@@ -73,20 +80,20 @@ class AlephBet
 
     pick_weighted_variant: ->
 
-      # Choosing a weighted variant:
-      # For A, B, C with weights 1, 3, 6
-      # variants = A, B, C
-      # weights = 1, 3, 6
-      # weights_sum = 10 (sum of weights)
-      # weighted_index = 2.1 (random number between 0 and weight sum)
-      # ABBBCCCCCC
-      # ==^
-      # Select B
+# Choosing a weighted variant:
+# For A, B, C with weights 1, 3, 6
+# variants = A, B, C
+# weights = 1, 3, 6
+# weights_sum = 10 (sum of weights)
+# weighted_index = 2.1 (random number between 0 and weight sum)
+# ABBBCCCCCC
+# ==^
+# Select B
       weights_sum = utils.sum_weights(@variants)
       weighted_index = Math.ceil((@_random('variant') * weights_sum))
       for key, value of @variants
-        # then we are substracting variant weight from selected number
-        # and it it reaches 0 (or below) we are selecting this variant
+# then we are substracting variant weight from selected number
+# and it it reaches 0 (or below) we are selecting this variant
         weighted_index -= value.weight
         return key if weighted_index <= 0
 
@@ -127,7 +134,7 @@ class AlephBet
       throw new Error('not all variants have weights') if !all_variants_have_weights
 
   class @Goal
-    constructor: (@name, @props={}) ->
+    constructor: (@name, @props = {}) ->
       utils.defaults(@props, {unique: true})
       @experiments = []
 
