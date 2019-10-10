@@ -20,6 +20,7 @@ class TestStorage
 class TestTracking
   experiment_start: sinon.spy()
   goal_complete: sinon.spy()
+  variant_activated: sinon.spy()
 
 setup = ->
   storage = new TestStorage
@@ -27,6 +28,7 @@ setup = ->
   activate.resetHistory()
   tracking.experiment_start.resetHistory()
   tracking.goal_complete.resetHistory()
+  tracking.variant_activated.resetHistory()
 
   default_options =
     name: 'experiment'
@@ -56,6 +58,16 @@ describe 'starts the experiment', (t) ->
   t.assert(activate.calledWith(ex), 'was called with experiment')
   t.assert(tracking.experiment_start.callCount == 1, 'experiment_start tracking was called once')
 
+describe 'user_id can be function', (t) ->
+  ex = experiment({user_id: -> 'yuzuu'})
+  t.plan(1)
+  t.assert(ex.user_id == 'yuzuu', 'user_id function is resolved')
+
+describe 'user_id can be string', (t) ->
+  ex = experiment({user_id: 'yuzuu'})
+  t.plan(1)
+  t.assert(ex.user_id == 'yuzuu', 'user_id string is returned')
+
 describe 'validates experiment parameters', (t) ->
   t.throws (->
     new AlephBet.Experiment()
@@ -70,10 +82,10 @@ describe 'validates experiment parameters', (t) ->
   t.end()
 
 describe 'deterministic variant with a given user_id', (t) ->
-  ex = experiment({user_id: 'yuzu'})
+  ex = experiment({user_id: -> 'yuzu'})
   t.plan(2)
   t.assert(ex.pick_variant() == 'blue', 'always picks blue variant')
-  ex = experiment({user_id: 'gosho'})
+  ex = experiment({user_id: -> 'gosho'})
   t.assert(ex.pick_variant() == 'red', 'always picks red variant')
 
 describe 'sticks to the same variant after choosing it', (t) ->
@@ -109,6 +121,11 @@ describe 'tracks goals', (t) ->
   t.assert(tracking.goal_complete.callCount == 1, 'goal_complete was called only once')
   t.assert(storage.get('with-goals:my goal') == true, 'goal stored')
 
+describe 'tracks variant activation', (t) ->
+  ex = experiment({name: 'with-goals'})
+  t.plan(1)
+  t.assert(tracking.variant_activated.callCount == 1, 'variant_activated was called only once')
+
 describe 'tracks non unique goals', (t) ->
   ex = experiment({name: 'with-goals'})
   ex.goal_complete('my goal', unique: false)
@@ -134,7 +151,7 @@ describe 'when all variants have weights', (t) ->
 
 describe 'when all variants have weights (with user_id)', (t) ->
   ex = experiment({
-    user_id: 'yuzu'
+    user_id: -> 'yuzu'
     variants:
       blue:
         weight: 20
@@ -145,8 +162,23 @@ describe 'when all variants have weights (with user_id)', (t) ->
   })
   t.plan(2)
   t.assert(ex.pick_variant() == 'blue', 'always picks blue variant')
-  ex.user_id = 'gosho'
+  ex.user_id = -> 'gosho'
   t.assert(ex.pick_variant() == 'red', 'always picks red variant')
+
+describe 'value saved when variant activated', (t) ->
+  ex = experiment({
+    user_id: -> 'yuzu',
+    variants:
+      blue:
+        weight: 50
+        activate: -> 'blue-value'
+      red:
+        weight: 50
+        activate: -> 'red-value'
+  })
+  ex.activate_variant('blue')
+  t.plan(1)
+  t.assert(ex.get_variant_value() == 'blue-value', 'get_variant_value returns variant activate return')
 
 describe 'when only some variants have weights', (t) ->
   try ex = experiment({

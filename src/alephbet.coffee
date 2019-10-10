@@ -21,24 +21,28 @@ class AlephBet
       storage_adapter: adapters.LocalStorageAdapter
 
     constructor: (@options = {}) ->
+      Object.defineProperty @, 'user_id', {
+        enumerable: true
+        configurable: true
+        get: ->
+          if typeof @_user_id is 'function' then return @_user_id();
+          return @_user_id;
+        set: (value) ->
+          @_user_id = value
+      }
+
       utils.defaults(@options, Experiment._options)
       _validate.call(this)
       @name = @options.name
       @variants = @options.variants
+      @_variant_value = null
       @user_id = @options.user_id
       @variant_names = utils.keys(@variants)
-      _run.call(this)
+      @run()
 
-    @property 'user_id',
-      get: ->
-        utils.log(['getter user_id', @_user_id, typeof @_user_id is 'function'])
-        if typeof @_user_id is 'function' then return @_user_id();
-        return @_user_id;
-      set: (value) ->
-        utils.log('setter user_id')
-        @_user_id = value
+    run: -> @_run()
 
-    run: ->
+    _run: ->
       utils.log("running with options: #{JSON.stringify(@options)}")
       if variant = @get_stored_variant()
 # a variant was already chosen. activate it
@@ -47,11 +51,14 @@ class AlephBet
       else
         @conditionally_activate_variant()
 
-    _run = -> @run()
+    get_variant_value: -> @_variant_value
 
     activate_variant: (variant) ->
-      @variants[variant]?.activate(this)
+      @_variant_value = @variants[variant]?.activate(this)
+      console.log("variant activate return: #{@_variant_value}")
       @storage().set("#{@options.name}:variant", variant)
+      @tracking()?.variant_activated(this, variant)
+      utils.log("activated variant : #{variant}", "variant value: #{@_variant_value}")
 
 # if experiment conditions match, pick and activate a variant, track experiment start
     conditionally_activate_variant: ->

@@ -1,2 +1,2 @@
 module.exports =
-  debug: false
+  debug: true
