@@ -55,7 +55,6 @@ class AlephBet
 
     activate_variant: (variant) ->
       @_variant_value = @variants[variant]?.activate(this)
-      console.log("variant activate return: #{@_variant_value}")
       @storage().set("#{@options.name}:variant", variant)
       @tracking()?.variant_activated(this, variant)
       utils.log("activated variant : #{variant}", "variant value: #{@_variant_value}")
