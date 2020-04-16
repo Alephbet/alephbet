@@ -18,7 +18,7 @@
     "basil.js": "~0.4.10",
     "crypto-js": "3.1.9-1",
     "lodash": "^4.7.15",
-    "node-uuid": "1.4.2"
+    "node-uuid": "1.4.8"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
