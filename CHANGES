@@ -1,3 +1,5 @@
+* 0.18.3 moved from node-uuid to uuid
+
 * 0.18.2 removed source maps from minified version
 
 * 0.18.1 changed main to point to dist/alephbet.min.js
