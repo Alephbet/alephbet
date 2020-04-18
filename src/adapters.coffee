@@ -85,6 +85,22 @@ class Adapters
       @_track(experiment, variant, utils.defaults({name: goal_name}, props))
 
 
+  ## Adapter for using the lamed backend. See https://github.com/Alephbet/lamed
+  ## inherits from GimelAdapter which uses the same backend API
+  ##
+  ## The main difference is the user_uuid generation
+  class @LamedAdapter extends @GimelAdapter
+    queue_name: '_lamed_queue'
+
+    _user_uuid: (experiment, goal) ->
+      return utils.uuid() unless experiment.user_id
+      # if goal is not unique, we track it every time. return a new random uuid
+      return utils.uuid() unless goal.unique
+      # for a given user id, namespace, goal and experiment, the uuid will always be the same
+      # this avoids counting goals twice for the same user across different devices
+      utils.sha1("#{@namespace}.#{experiment.name}.#{goal.name}.#{experiment.user_id}")
+
+
   class @PersistentQueueGoogleAnalyticsAdapter
     namespace: 'alephbet'
     queue_name: '_ga_queue'

@@ -6,8 +6,8 @@ utils = require('../src/utils')
 storage = null
 tracking = null
 gimel = null
+lamed = null
 url = null
-namespace = null
 keen = null
 keen_client =
   addEvent: sinon.spy()
@@ -26,10 +26,10 @@ class TestStorage
 setup = ->
   storage = new TestStorage
   url = 'http://url.com'
-  namespace = 'gimel'
-  gimel = new Adapters.GimelAdapter(url, namespace, storage)
+  gimel = new Adapters.GimelAdapter(url, 'gimel', storage)
+  lamed = new Adapters.LamedAdapter(url, 'lamed', storage)
   keen = new Adapters.PersistentQueueKeenAdapter(keen_client, storage)
-  gimel._remove_quuid = keen._remove_quuid = remove_quuid
+  gimel._remove_quuid = keen._remove_quuid = lamed._remove_quuid = remove_quuid
 
 describe = (description, fn) ->
   test description, (t) ->
@@ -86,6 +86,60 @@ describe 'gimel : goal_complete with user_id', (t) ->
                                       variant: 'red'
                                       event: 'goal'
                                       namespace: 'gimel',
+                                      'callback'
+                                     ), 'uses a consistent hash based on user_id, with the goal name')
+
+describe 'lamed : experiment_start', (t) ->
+  lamed._ajax_get = sinon.spy()
+  t.plan(1)
+  lamed.experiment_start({name: 'experiment'}, 'blue')
+  t.assert(lamed._ajax_get.calledWith(url,
+                                      experiment: 'experiment'
+                                      uuid: 'uuid'
+                                      variant: 'blue'
+                                      event: 'participate'
+                                      namespace: 'lamed',
+                                      'callback'
+                                     ), 'uses a random uuid, with participate event')
+
+describe 'lamed : experiment_start with user_id', (t) ->
+  lamed._ajax_get = sinon.spy()
+  t.plan(1)
+  lamed.experiment_start({name: 'experiment', user_id: 'yuzu'}, 'blue')
+  # console.log(lamed._ajax_get.getCall(0).args)
+  t.assert(lamed._ajax_get.calledWith(url,
+                                      experiment: 'experiment'
+                                      uuid: '6bb0da99203847d88ce20dabf3d822f49f156734'
+                                      variant: 'blue'
+                                      event: 'participate'
+                                      namespace: 'lamed',
+                                      'callback'
+                                     ), 'uses a consistent hash based on user_id, with participate event')
+
+describe 'lamed : goal_complete', (t) ->
+  lamed._ajax_get = sinon.spy()
+  t.plan(1)
+  lamed.goal_complete({name: 'experiment'}, 'red', 'goal', {unique: true})
+  t.assert(lamed._ajax_get.calledWith(url,
+                                      experiment: 'experiment'
+                                      uuid: 'uuid'
+                                      variant: 'red'
+                                      event: 'goal'
+                                      namespace: 'lamed',
+                                      'callback'
+                                     ), 'uses a random uuid, with the goal name')
+
+describe 'lamed : goal_complete with user_id', (t) ->
+  lamed._ajax_get = sinon.spy()
+  t.plan(1)
+  lamed.goal_complete({name: 'experiment', user_id: 'yuzu'}, 'red', 'goal', {unique: true})
+  # console.log(lamed._ajax_get.getCall(0).args)
+  t.assert(lamed._ajax_get.calledWith(url,
+                                      experiment: 'experiment'
+                                      uuid: 'e69f2e0ab65fec7136f1c2f17b98df35e39c91be'
+                                      variant: 'red'
+                                      event: 'goal'
+                                      namespace: 'lamed',
                                       'callback'
                                      ), 'uses a consistent hash based on user_id, with the goal name')
 
