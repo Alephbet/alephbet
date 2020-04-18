@@ -41,7 +41,7 @@
     "build": "npm run lodash-custom && npm run build-debug && npm run build-min",
     "test-standalone": "npm run test ; echo '<script src=\"bundle.js\"></script>' > test/test.html",
     "test": "webpack --config webpack.test.config.coffee",
-    "watch": "webpack --config webpack.config.coffee --watch --mode development"
+    "watch": "webpack --config webpack.test.config.coffee --watch --mode development"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
   "main": "dist/alephbet.min.js",
