@@ -1,4 +1,11 @@
-* 0.18.3 moved from node-uuid to uuid
+* 0.19.0 adding LamedAdapter (inherits from GimelAdapter)
+    - see https://github.com/Alephbet/lamed
+    - the lamed and gimel backend APIs are identical.
+      However, gimel and lamed storage makes uuid generation different.
+      Technically, updating the GimelAdapter should be ok, but can break
+      backwards compatibility for *currently running experiments* (only).
+      It was therefore sensible to create a separate adapter for lamed (and
+      also for future changes)* 0.18.3 moved from node-uuid to uuid
 
 * 0.18.2 removed source maps from minified version
 
