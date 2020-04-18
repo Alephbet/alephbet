@@ -1,6 +1,6 @@
 # NOTE: using a custom build of lodash, to save space
 _ = require('../vendor/lodash.custom.min')
-uuid = require('node-uuid')
+uuid = require('uuid')
 sha1 = require('crypto-js/sha1')
 options = require('./options')
 
