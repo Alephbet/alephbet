@@ -201,7 +201,7 @@ if (get_user_id()) {
 Notes:
 
 * For user-based tracking, make sure you *always* have a user_id. Do not mix visitors (without an id) and users (with an id) in the same experiment.
-* Cross-device tracking only works with the [Gimel](https://github.com/Alephbet/gimel) or keen.io tracking backends. It does not work with Google Analytics.
+* Cross-device tracking only works with the [Gimel](https://github.com/Alephbet/gimel), [Lamed](https://github.com/Alephbet/lamed) or keen.io tracking backends. It does not work with Google Analytics.
 
 See this [Wiki page](https://github.com/Alephbet/alephbet/wiki/User-based-and-Cross-device-tracking) for more information
 
@@ -254,6 +254,8 @@ AlephBet comes with a built-in Google Analytics adapter and three, currently exp
 [Persistent Queue Keen Adapter](../../wiki/Tips-&-Caveats#persistentqueuekeenadapter)
 
 [Gimel](https://github.com/Alephbet/gimel) adapter
+
+[Lamed](https://github.com/Alephbet/lamed) adapter
 
 Creating custom adapters is however very easy.
 
