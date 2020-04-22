@@ -7,6 +7,7 @@ class AlephBet
   @utils = utils
 
   @GimelAdapter = adapters.GimelAdapter
+  @LamedAdapter = adapters.LamedAdapter
   @PersistentQueueGoogleAnalyticsAdapter = adapters.PersistentQueueGoogleAnalyticsAdapter
   @PersistentQueueKeenAdapter = adapters.PersistentQueueKeenAdapter
 
