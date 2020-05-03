@@ -6,7 +6,7 @@ AlephBet is a pure-javascript A/B (multivariate) testing framework for developer
 
 Key Features:
 
-* **NEW**: run your own tracking backend on Rails with [Alephbet](https://github.com/Alephbet/alephbet-rails) (still experimental)
+* **NEW**: run your own tracking backend on Rails with the [alephbet](https://github.com/Alephbet/alephbet-rails) rubygem (still experimental)
 * **NEW**: run your own tracking backend on AWS Lambda with [Lamed](https://github.com/Alephbet/lamed) (recommended)
 * Weighted variants. See https://github.com/Alephbet/alephbet/pull/20
 * user-based / cross-device experiments. See https://github.com/Alephbet/alephbet/issues/16
