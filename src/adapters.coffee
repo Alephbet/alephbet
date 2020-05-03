@@ -65,7 +65,7 @@ class Adapters
       utils.sha1("#{@namespace}.#{experiment.name}.#{goal.name}.#{experiment.user_id}")
 
     _track: (experiment, variant, goal) ->
-      utils.log("Persistent Queue Gimel track: #{@namespace}, #{experiment.name}, #{variant}, #{goal.name}")
+      utils.log("Persistent Queue track: #{@namespace}, #{experiment.name}, #{variant}, #{goal.name}")
       @_queue.shift() if @_queue.length > 100
       @_queue.push
         properties:
