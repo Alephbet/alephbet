@@ -90,6 +90,8 @@ var page_views = new AlephBet.Goal('page view', {unique: false});
   - `button color | blue`, `button clicked` : unique visitors clicking on the button assigned to the `blue` variant.
   - `button color | red`, `viewed page` : count of pages viewed by all visitors (not-unique) *after* the experiment started.
 
+* **important note**: whilst Google Analytics is the *easiest* way to start playing with Alephbet, it's definitely not the best way to use it. GA starts sampling events after you reach a certain volume, and the built-in GA adapter does not support more advanced features like [cross-device tracking](https://github.com/Alephbet/alephbet/wiki/User-based-and-Cross-device-tracking). If you're serious about running A/B tests, I would urge you to consider using [Lamed](https://github.com/Alephbet/lamed), [Gimel](https://github.com/Alephbet/gimel) or another backend instead.
+
 ## Advanced Usage
 
 ### Recommended Usage Pattern
