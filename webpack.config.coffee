@@ -1,4 +1,5 @@
 path = require("path")
+BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 
 file_name = (mode) ->
   if mode == "production"
@@ -8,16 +9,16 @@ file_name = (mode) ->
 
 module.exports = (env, argv) ->
   target: "web"
+  mode: "production"
   entry: "./src/alephbet.coffee"
   output:
     filename: file_name(argv.mode)
     path: path.resolve(__dirname, "dist")
-    library: "AlephBet"
-    libraryTarget: "umd"
+    library:
+      name: "AlephBet"
+      type: "umd"
   watchOptions:
-    ignored: [
-      /node_modules/
-    ]
+    ignored: /node_modules/
   devtool: "inline-source-map"
   resolve:
     modules: [
@@ -28,6 +29,9 @@ module.exports = (env, argv) ->
       ".coffee"
       ".js"
     ]
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
   module:
     rules: [
       test: /\.coffee$/
@@ -35,6 +39,8 @@ module.exports = (env, argv) ->
         loader: "coffee-loader"
         options:
           transpile:
-            presets: [ "@babel/preset-env" ]
+            presets: [
+              ["@babel/preset-env", {modules: false}]
+            ]
       ]
     ]

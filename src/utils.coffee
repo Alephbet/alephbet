@@ -1,17 +1,30 @@
-# NOTE: using a custom build of lodash, to save space
-_ = require('../vendor/lodash.custom.min')
-uuid = require('node-uuid')
-sha1 = require('crypto-js/sha1')
+import {v4} from 'uuid'
+
+sha1 = require('sha1')
 options = require('./options')
 
 class Utils
-  @defaults: _.defaults
-  @keys: _.keys
-  @remove: _.remove
-  @omit: _.omit
+  @defaults: (obj, defaults) ->
+    for key, value of defaults
+      if obj[key] == undefined
+        obj[key] = value
+    return object
+  @keys: Object.keys
+  @remove: (list, callback) ->
+    index = -1
+    list.some((el, i) ->
+      index = i if callback(e, i)
+      return index > -1
+    )
+    if (index > -1) then list.splice(index, 1) else []
+  @omit: (obj, ...keys) ->
+    results = {...obj}
+    for key in [].concat.apply([], keys)
+      delete results[key]
+    return results
   @log: (message) ->
     console.log(message) if options.debug
-  @uuid: uuid.v4
+  @uuid: v4
   @sha1: (text) ->
     sha1(text).toString()
   @random: (seed) ->

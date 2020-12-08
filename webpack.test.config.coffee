@@ -3,16 +3,20 @@ path = require("path")
 
 module.exports =
   target: "web"
+  mode: "development"
   entry: [
     "./test/alephbet_test.coffee"
     "./test/utils_test.coffee"
     "./test/adapters_test.coffee"
   ]
-  node:
-    fs: "empty"
+  node: false
+  # fs: "empty"
   output:
     path: path.resolve(__dirname, "./test")
     filename: "bundle.js"
+  watchOptions:
+    ignored: /node_modules/
+  devtool: "inline-source-map"
   resolve:
     modules: [
       "node_modules"
@@ -35,6 +39,8 @@ module.exports =
         loader: "coffee-loader"
         options:
           transpile:
-            presets: [ "@babel/preset-env" ]
+            presets: [
+              ["@babel/preset-env", {modules: false}]
+            ]
       ]
     ]
