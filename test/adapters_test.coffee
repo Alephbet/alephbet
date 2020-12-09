@@ -1,5 +1,3 @@
-test = require('tape')
-sinon = require('sinon')
 Adapters = require('../src/adapters')
 utils = require('../src/utils')
 
@@ -10,9 +8,9 @@ url = null
 namespace = null
 keen = null
 keen_client =
-  addEvent: sinon.spy()
-utils.uuid = sinon.stub().returns('uuid')
-remove_quuid = sinon.stub().returns('callback')
+  addEvent: jest.fn()
+utils.uuid = jest.fn(() -> 'uuid')
+remove_quuid = jest.fn(() -> 'callback')
 
 class TestStorage
   @namespace: 'alephbet'
@@ -23,7 +21,7 @@ class TestStorage
   get: (key) ->
     @storage[key]
 
-setup = ->
+beforeEach ->
   storage = new TestStorage
   url = 'http://url.com'
   namespace = 'gimel'
@@ -31,70 +29,66 @@ setup = ->
   keen = new Adapters.PersistentQueueKeenAdapter(keen_client, storage)
   gimel._remove_quuid = keen._remove_quuid = remove_quuid
 
-describe = (description, fn) ->
-  test description, (t) ->
-    setup()
-    fn(t)
 
-describe 'gimel : experiment_start', (t) ->
-  gimel._ajax_get = sinon.spy()
-  t.plan(1)
+test 'gimel : experiment_start', () ->
+  gimel._ajax_get = jest.fn()
   gimel.experiment_start({name: 'experiment'}, 'blue')
   # console.log(gimel._ajax_get.getCall(0).args)
-  t.assert(gimel._ajax_get.calledWith(url,
-                                      experiment: 'experiment'
-                                      uuid: 'uuid'
-                                      variant: 'blue'
-                                      event: 'participate'
-                                      namespace: 'gimel',
-                                      'callback'
-                                     ), 'uses a random uuid, with participate event')
+  expect(gimel._ajax_get).toHaveBeenCalledWith(
+    url,
+    experiment: 'experiment'
+    uuid: 'uuid'
+    variant: 'blue'
+    event: 'participate'
+    namespace: 'gimel',
+    'callback'
+  )
 
-describe 'gimel : experiment_start with user_id', (t) ->
-  gimel._ajax_get = sinon.spy()
-  t.plan(1)
+test 'gimel : experiment_start with user_id', () ->
+  gimel._ajax_get = jest.fn()
   gimel.experiment_start({name: 'experiment', user_id: 'yuzu'}, 'blue')
-  t.assert(gimel._ajax_get.calledWith(url,
-                                      experiment: 'experiment'
-                                      uuid: 'bd602047286a161da01f2c938461edde4e467a63'
-                                      variant: 'blue'
-                                      event: 'participate'
-                                      namespace: 'gimel',
-                                      'callback'
-                                     ), 'uses a consistent hash based on user_id, with participate event')
+  expect(gimel._ajax_get).toHaveBeenCalledWith(
+    url,
+    experiment: 'experiment'
+    uuid: 'bd602047286a161da01f2c938461edde4e467a63'
+    variant: 'blue'
+    event: 'participate'
+    namespace: 'gimel',
+    'callback'
+  )
 
-describe 'gimel : goal_complete', (t) ->
-  gimel._ajax_get = sinon.spy()
-  t.plan(1)
+test 'gimel : goal_complete', () ->
+  gimel._ajax_get = jest.fn()
   gimel.goal_complete({name: 'experiment'}, 'red', 'goal', {unique: true})
-  t.assert(gimel._ajax_get.calledWith(url,
-                                      experiment: 'experiment'
-                                      uuid: 'uuid'
-                                      variant: 'red'
-                                      event: 'goal'
-                                      namespace: 'gimel',
-                                      'callback'
-                                     ), 'uses a random uuid, with the goal name')
+  expect(gimel._ajax_get).toHaveBeenCalledWith(
+    url,
+    experiment: 'experiment'
+    uuid: 'uuid'
+    variant: 'red'
+    event: 'goal'
+    namespace: 'gimel',
+    'callback'
+  )
 
-describe 'gimel : goal_complete with user_id', (t) ->
-  gimel._ajax_get = sinon.spy()
-  t.plan(1)
+test 'gimel : goal_complete with user_id', () ->
+  gimel._ajax_get = jest.fn()
   gimel.goal_complete({name: 'experiment', user_id: 'yuzu'}, 'red', 'goal', {unique: true})
-  t.assert(gimel._ajax_get.calledWith(url,
-                                      experiment: 'experiment'
-                                      uuid: 'bd602047286a161da01f2c938461edde4e467a63'
-                                      variant: 'red'
-                                      event: 'goal'
-                                      namespace: 'gimel',
-                                      'callback'
-                                     ), 'uses a consistent hash based on user_id, with the goal name')
+  expect(gimel._ajax_get).toHaveBeenCalledWith(
+    url,
+    experiment: 'experiment'
+    uuid: 'bd602047286a161da01f2c938461edde4e467a63'
+    variant: 'red'
+    event: 'goal'
+    namespace: 'gimel',
+    'callback'
+  )
 
-describe 'keen : experiment_start', (t) ->
-  t.plan(1)
+test 'keen : experiment_start', () ->
   keen.experiment_start({name: 'experiment'}, 'blue')
-  t.assert(keen_client.addEvent.calledWith('experiment',
-                                           uuid: 'uuid'
-                                           variant: 'blue'
-                                           event: 'participate',
-                                           'callback'
-                                          ), 'uses a random uuid, with participate event')
+  expect(keen_client.addEvent).toHaveBeenCalledWith(
+    'experiment',
+    uuid: 'uuid'
+    variant: 'blue'
+    event: 'participate',
+    'callback'
+  )

@@ -148,7 +148,7 @@ class Adapters
       utils.sha1("#{@namespace}.#{experiment.name}.#{experiment.user_id}")
 
     _track: (experiment, variant, goal) ->
-      utils.log("Persistent Queue Keen track: #{experiment.name}, #{variant}, #{event}")
+      utils.log("Persistent Queue Keen track: #{experiment.name}, #{variant}, #{goal.name}")
       @_queue.shift() if @_queue.length > 100
       @_queue.push
         experiment_name: experiment.name

@@ -1,6 +1,7 @@
 import {v4} from 'uuid'
 
 sha1 = require('sha1')
+# sha1 = require('crypto-js/sha1')
 options = require('./options')
 
 class Utils
@@ -8,7 +9,7 @@ class Utils
     for key, value of defaults
       if obj[key] == undefined
         obj[key] = value
-    return object
+    return obj
   @keys: Object.keys
   @remove: (list, callback) ->
     index = -1
