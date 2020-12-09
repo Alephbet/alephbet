@@ -29,9 +29,6 @@ module.exports = (env, argv) ->
       ".coffee"
       ".js"
     ]
-  plugins: [
-    new BundleAnalyzerPlugin()
-  ]
   module:
     rules: [
       test: /\.coffee$/

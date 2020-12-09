@@ -15,7 +15,10 @@
     ]
   },
   "jest": {
-    "moduleFileExtensions": ["js", "coffee"],
+    "moduleFileExtensions": [
+      "js",
+      "coffee"
+    ],
     "testRegex": "/test/.+_test\\.coffee?",
     "transform": {
       "^.+\\.jsx?$": "babel-jest",
@@ -25,7 +28,6 @@
   "dependencies": {
     "basil.js": "~0.4.11",
     "crypto-js": "^4.0.0",
-    "lodash": "^4.17.20",
     "sha1": "^1.1.1",
     "uuid": "^8.3.1"
   },
@@ -37,14 +39,15 @@
     "coffeescript": "^2.5.1",
     "coffeetape": "^2.0.0",
     "jest": "^26.6.3",
+    "lodash": "^4.17.20",
     "webpack": "^5.4.0",
     "webpack-bundle-analyzer": "^4.1.0",
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
     "build-debug": "webpack --config webpack.config.coffee --mode development",
-    "build-min": "webpack --config webpack.config.coffee --mode production",
-    "build": "npm run lodash-custom && npm run build-debug && npm run build-min",
+    "prepare": "webpack --config webpack.config.coffee --mode production",
+    "analyze": "webpack --config webpack.config.coffee --mode production --analyze",
     "test": "jest --verbose",
     "watch": "jest --watch",
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
