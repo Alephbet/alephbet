@@ -7,6 +7,12 @@ file_name = (mode) ->
   else
     "alephbet.js"
 
+source_map = (mode) ->
+  if mode == "production"
+    false
+  else
+    "inline-source-map"
+
 module.exports = (env, argv) ->
   target: "web"
   mode: "production"
@@ -19,7 +25,7 @@ module.exports = (env, argv) ->
       type: "umd"
   watchOptions:
     ignored: /node_modules/
-  devtool: "inline-source-map"
+  devtool: source_map(argv.mode)
   resolve:
     modules: [
       "src"

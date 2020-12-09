@@ -3,16 +3,16 @@ Storage = require('./storage')
 
 class Adapters
 
-  ## Adapter for using the gimel backend. See https://github.com/Alephbet/gimel
+  ## A parent class Adapter for using the Alephbet backend API.
   ## uses jQuery to send data if `$.ajax` is found. Falls back on plain js xhr
   ## params:
-  ## - url: Gimel track URL to post events to
-  ## - namepsace: namespace for Gimel (allows setting different environments etc)
-  ## - storage (optional) - storage adapter for the queue
-  class @GimelAdapter
-    queue_name: '_gimel_queue'
+  ## - url: track URL to post events to
+  ## - namepsace (optional): allows setting different environments etc
+  ## - storage (optional): storage adapter for the queue
+  class @AlephbetAdapter
+    queue_name: '_alephbet_queue'
 
-    constructor: (url, namespace, storage = Adapters.LocalStorageAdapter) ->
+    constructor: (url, namespace = 'alephbet', storage = Adapters.LocalStorageAdapter) ->
       @_storage = storage
       @url = url
       @namespace = namespace
@@ -60,12 +60,12 @@ class Adapters
       return utils.uuid() unless experiment.user_id
       # if goal is not unique, we track it every time. return a new random uuid
       return utils.uuid() unless goal.unique
-      # for a given user id, namespace and experiment, the uuid will always be the same
+      # for a given user id, namespace, goal and experiment, the uuid will always be the same
       # this avoids counting goals twice for the same user across different devices
-      utils.sha1("#{@namespace}.#{experiment.name}.#{experiment.user_id}")
+      utils.sha1("#{@namespace}.#{experiment.name}.#{goal.name}.#{experiment.user_id}")
 
     _track: (experiment, variant, goal) ->
-      utils.log("Persistent Queue Gimel track: #{@namespace}, #{experiment.name}, #{variant}, #{goal.name}")
+      utils.log("Persistent Queue track: #{@namespace}, #{experiment.name}, #{variant}, #{goal.name}")
       @_queue.shift() if @_queue.length > 100
       @_queue.push
         properties:
@@ -83,6 +83,35 @@ class Adapters
 
     goal_complete: (experiment, variant, goal_name, props) ->
       @_track(experiment, variant, utils.defaults({name: goal_name}, props))
+
+  ## Adapter for using the lamed backend. See https://github.com/Alephbet/lamed
+  ## inherits from AlephbetAdapter which uses the same backend API
+  ##
+  class @LamedAdapter extends @AlephbetAdapter
+    queue_name: '_lamed_queue'
+
+  ## Adapter for using the gimel backend. See https://github.com/Alephbet/gimel
+  ## The main difference is the user_uuid generation (for backwards compatibility)
+  ## params:
+  ## - url: Gimel track URL to post events to
+  ## - namepsace: namespace for Gimel (allows setting different environments etc)
+  ## - storage (optional) - storage adapter for the queue
+  class @GimelAdapter extends @AlephbetAdapter
+    queue_name: '_lamed_queue'
+
+    _user_uuid: (experiment, goal) ->
+      return utils.uuid() unless experiment.user_id
+      # if goal is not unique, we track it every time. return a new random uuid
+      return utils.uuid() unless goal.unique
+      # for a given user id, namespace and experiment, the uuid will always be the same
+      # this avoids counting goals twice for the same user across different devices
+      utils.sha1("#{@namespace}.#{experiment.name}.#{experiment.user_id}")
+
+  ## Adapter for using the lamed backend. See https://github.com/Alephbet/lamed
+  ## inherits from AlephbetAdapter which uses the same backend API
+  ##
+  class @RailsAdapter extends @AlephbetAdapter
+    queue_name: '_rails_queue'
 
 
   class @PersistentQueueGoogleAnalyticsAdapter

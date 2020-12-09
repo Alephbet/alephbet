@@ -1,6 +1,6 @@
 {
   "name": "alephbet",
-  "version": "0.18.0",
+  "version": "0.20.1",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "files": [
     "lib",
@@ -26,10 +26,6 @@
     }
   },
   "dependencies": {
-    "basil.js": "~0.4.11",
-    "crypto-js": "^4.0.0",
-    "sha1": "^1.1.1",
-    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -53,7 +49,7 @@
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
-  "main": "alephbet",
+  "main": "dist/alephbet.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alephbet/alephbet.git"
