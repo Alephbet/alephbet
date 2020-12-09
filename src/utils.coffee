@@ -1,7 +1,6 @@
 import {v4} from 'uuid'
 
 sha1 = require('sha1')
-# sha1 = require('crypto-js/sha1')
 options = require('./options')
 
 class Utils
@@ -12,12 +11,12 @@ class Utils
     return obj
   @keys: Object.keys
   @remove: (list, callback) ->
-    index = -1
-    list.some((el, i) ->
-      index = i if callback(e, i)
-      return index > -1
-    )
-    if (index > -1) then list.splice(index, 1) else []
+    deletions = []
+    for el, index in [...list]
+      if callback(el, index)
+        list.splice(list.indexOf(el), 1)
+        deletions.push(el)
+    return deletions
   @omit: (obj, ...keys) ->
     results = {...obj}
     for key in [].concat.apply([], keys)

@@ -1,4 +1,27 @@
+_ = require('lodash')
+
 Utils = require('../src/utils')
+
+test 'omit', () ->
+  obj = {a: 1, b: 2, c: 3}
+  new_obj = Utils.omit(obj, "a")
+  expect(new_obj).not.toEqual(obj)
+  expect(new_obj).toEqual(_.omit(obj, "a"))
+  expect(Utils.omit(obj, ["a", "b"]))
+    .toEqual(_.omit(obj, ["a", "b"]))
+
+test 'remove', () ->
+  list = [1, 2, 3, 4, 5]
+  Utils.remove(list, (el) -> el == 2)
+  expect(list).toEqual([1, 3, 4, 5])
+  Utils.remove(list, (el) -> el == 3 || el == 5)
+  expect(list).toEqual([1, 4])
+
+test 'defaults', () ->
+  defaults = {a: 1, b: 2, c: 3}
+  obj = {a: 5}
+  Utils.defaults(obj, defaults)
+  expect(obj).toEqual({a: 5, b: 2, c: 3})
 
 test 'utils - check_weights', () ->
   variants = {
