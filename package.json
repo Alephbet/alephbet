@@ -41,15 +41,15 @@
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
-    "build-debug": "webpack --config webpack.config.coffee --mode development",
-    "prepare": "webpack --config webpack.config.coffee --mode production",
+    "prepare": "webpack --config webpack.config.coffee --mode development",
+    "prepack": "webpack --config webpack.config.coffee --mode production",
     "analyze": "webpack --config webpack.config.coffee --mode production --analyze",
     "test": "jest --verbose",
     "watch": "jest --watch",
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
-  "main": "dist/alephbet.min.js",
+  "main": "dist/alephbet.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alephbet/alephbet.git"
