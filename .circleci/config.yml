@@ -1,9 +1,0 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: circleci/node:13-browsers
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm test
