@@ -41,9 +41,8 @@
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
-    "prepare": "webpack --config webpack.config.coffee --mode development",
-    "prepack": "webpack --config webpack.config.coffee --mode production",
-    "analyze": "webpack --config webpack.config.coffee --mode production --analyze",
+    "prepare": "webpack",
+    "analyze": "webpack --analyze",
     "test": "jest --verbose",
     "watch": "jest --watch",
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
