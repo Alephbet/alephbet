@@ -11,7 +11,6 @@ keen_client =
   addEvent: jest.fn()
 utils.uuid = jest.fn(() -> 'uuid')
 remove_quuid = jest.fn(() -> 'callback')
-bla = "test"
 
 class TestStorage
   @namespace: 'alephbet'
