@@ -1,5 +1,5 @@
-utils = require('./utils')
-Storage = require('./storage')
+import Storage from './storage'
+import utils from './utils'
 
 class Adapters
 
@@ -219,4 +219,4 @@ class Adapters
       new Storage(@namespace).get(key)
 
 
-module.exports = Adapters
+export default Adapters

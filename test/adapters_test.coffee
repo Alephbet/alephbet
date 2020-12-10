@@ -1,5 +1,5 @@
-Adapters = require('../src/adapters')
-utils = require('../src/utils')
+import Adapters from '../src/adapters'
+import utils from '../src/utils'
 
 storage = null
 tracking = null

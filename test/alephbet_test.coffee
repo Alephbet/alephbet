@@ -1,5 +1,5 @@
-_ = require('lodash')
-AlephBet = require('../src/alephbet')
+import AlephBet from '../src/alephbet'
+import _ from 'lodash'
 
 storage = null
 tracking = null

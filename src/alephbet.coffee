@@ -1,6 +1,6 @@
-utils = require('./utils')
-adapters = require('./adapters')
-options = require('./options')
+import utils from './utils'
+import adapters from './adapters'
+import options from './options'
 
 class AlephBet
   @options = options
@@ -144,4 +144,4 @@ class AlephBet
         experiment.goal_complete(@name, @props)
 
 
-module.exports = AlephBet
+export default AlephBet

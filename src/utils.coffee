@@ -1,7 +1,7 @@
 import {v4} from 'uuid'
+import options from './options'
 
 sha1 = require('sha1')
-options = require('./options')
 
 class Utils
   @defaults: (obj, defaults) ->
@@ -44,4 +44,5 @@ class Utils
     contains_weight = []
     contains_weight.push(value.weight?) for key, value of variants
     contains_weight.every (has_weight) -> has_weight or contains_weight.every (has_weight) -> !has_weight
-module.exports = Utils
+
+export default Utils

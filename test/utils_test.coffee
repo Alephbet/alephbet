@@ -1,6 +1,5 @@
-_ = require('lodash')
-
-Utils = require('../src/utils')
+import Utils from '../src/utils'
+import _ from 'lodash'
 
 test 'omit', () ->
   obj = {a: 1, b: 2, c: 3}
