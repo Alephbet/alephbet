@@ -29,7 +29,7 @@ module.exports =
         options:
           transpile:
             presets: [
-              ["@babel/preset-env", {modules: false}]
+              ["@babel/preset-env"]
             ]
       ]
     ]
