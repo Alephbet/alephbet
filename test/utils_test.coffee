@@ -1,17 +1,28 @@
-test = require('tape')
-sinon = require('sinon')
-_ = require('lodash')
-Utils = require('../src/utils')
+import Utils from '../src/utils'
+import _ from 'lodash'
 
-setup = ->
-  utils = new Utils()
+test 'omit', () ->
+  obj = {a: 1, b: 2, c: 3}
+  new_obj = Utils.omit(obj, "a")
+  expect(new_obj).not.toEqual(obj)
+  expect(new_obj).toEqual(_.omit(obj, "a"))
+  expect(Utils.omit(obj, ["a", "b"]))
+    .toEqual(_.omit(obj, ["a", "b"]))
 
-describe = (description, fn) ->
-  test description, (t) ->
-    setup()
-    fn(t)
+test 'remove', () ->
+  list = [1, 2, 3, 4, 5]
+  Utils.remove(list, (el) -> el == 2)
+  expect(list).toEqual([1, 3, 4, 5])
+  Utils.remove(list, (el) -> el == 3 || el == 5)
+  expect(list).toEqual([1, 4])
 
-describe 'utils - check_weights', (t) ->
+test 'defaults', () ->
+  defaults = {a: 1, b: 2, c: 3}
+  obj = {a: 5}
+  Utils.defaults(obj, defaults)
+  expect(obj).toEqual({a: 5, b: 2, c: 3})
+
+test 'utils - check_weights', () ->
   variants = {
     a:
       weight: 50
@@ -30,12 +41,11 @@ describe 'utils - check_weights', (t) ->
     b: {}
   }
   some_have_weights = Utils.check_weights(variants)
-  t.plan(3)
-  t.assert(all_have_weights == true, 'all variants have weight')
-  t.assert(none_have_weights == false, 'no variants have weights')
-  t.assert(some_have_weights == false, 'only some variants have weight')
+  expect(all_have_weights).toBeTruthy()
+  expect(none_have_weights).toBeFalsy()
+  expect(some_have_weights).toBeFalsy()
 
-describe 'utils - sum_weights', (t) ->
+test 'utils - sum_weights', () ->
   default_sum = Utils.sum_weights({})
   variants = {
     a:
@@ -46,12 +56,11 @@ describe 'utils - sum_weights', (t) ->
   sum_with_weights = Utils.sum_weights(variants)
   variants.b = {}
   sum_with_missing_weights = Utils.sum_weights(variants)
-  t.plan(3)
-  t.assert(default_sum == 0, 'sum should be 0 with no weights')
-  t.assert(sum_with_weights == 90, 'sum is 90 with all weights')
-  t.assert(sum_with_missing_weights == 55, 'sum is 55 with some weights')
+  expect(default_sum).toBe(0)
+  expect(sum_with_weights).toBe(90)
+  expect(sum_with_missing_weights).toBe(55)
 
-describe 'utils - validate_weights', (t) ->
+test 'utils - validate_weights', () ->
   variants = {
     a:
       weight: 55
@@ -70,7 +79,6 @@ describe 'utils - validate_weights', (t) ->
     b: {}
   }
   none_have_weights = Utils.validate_weights(variants)
-  t.plan(3)
-  t.assert(all_have_weights == true, 'all have weights is valid')
-  t.assert(some_have_weights == false, 'only some have weights is invalid')
-  t.assert(none_have_weights == true, 'none have weights is valid')
+  expect(all_have_weights).toBeTruthy()
+  expect(some_have_weights).toBeFalsy()
+  expect(none_have_weights).toBeTruthy()

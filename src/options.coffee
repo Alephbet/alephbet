@@ -1,2 +1,3 @@
-module.exports =
+export default {
   debug: false
+}

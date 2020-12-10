@@ -1,4 +1,5 @@
-Basil = require('basil.js')
+import Basil from 'basil.js'
+
 store = new Basil(namespace: null)
 
 # a thin wrapper around basil.js for easy swapping
@@ -13,4 +14,4 @@ class Storage
     @storage[key]
     # store.get("#{@namespace}:#{key}")
 
-module.exports = Storage
+export default Storage

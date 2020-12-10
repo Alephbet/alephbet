@@ -14,34 +14,41 @@
       "coffeeify"
     ]
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "coffee"
+    ],
+    "testRegex": "/test/.+_test\\.coffee?",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.coffee$": "<rootDir>/test/preprocessor.js"
+    }
+  },
   "dependencies": {
-    "basil.js": "~0.4.10",
-    "crypto-js": "3.1.9-1",
-    "lodash": "^4.7.15",
-    "uuid": "^7.0.3"
+    "basil.js": "^0.4.11",
+    "sha1": "^1.1.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "coffee-loader": "^0.9.0",
-    "coffeescript": "^2.4.1",
+    "@babel/preset-env": "^7.12.7",
+    "babel-jest": "^26.6.3",
+    "coffee-loader": "^1.0.1",
+    "coffeescript": "^2.5.1",
     "coffeetape": "^2.0.0",
-    "lodash-cli": "^4.7.15",
-    "sinon": "^7.4.1",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.8.0",
-    "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.7",
-    "webpack-tape-run": "0.0.7"
+    "jest": "^26.6.3",
+    "lodash": "^4.17.20",
+    "webpack": "^5.4.0",
+    "webpack-bundle-analyzer": "^4.1.0",
+    "webpack-cli": "^4.2.0"
   },
   "scripts": {
-    "lodash-custom": "lodash -p include=keys,defaults,remove,omit exports=node -o ./vendor/lodash.custom.min.js",
-    "build-debug": "webpack --config webpack.config.coffee --mode development",
-    "build-min": "webpack --config webpack.config.coffee --mode production",
-    "build": "npm run lodash-custom && npm run build-debug && npm run build-min",
-    "test-standalone": "npm run test ; echo '<script src=\"bundle.js\"></script>' > test/test.html",
-    "test": "webpack --config webpack.test.config.coffee",
-    "watch": "webpack --config webpack.test.config.coffee --watch --mode development"
+    "build": "webpack",
+    "analyze": "webpack --analyze",
+    "test": "jest --verbose",
+    "watch": "jest --watch",
+    "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
   "main": "dist/alephbet.min.js",

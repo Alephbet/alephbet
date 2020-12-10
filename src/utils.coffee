@@ -1,17 +1,30 @@
-# NOTE: using a custom build of lodash, to save space
-_ = require('../vendor/lodash.custom.min')
-uuid = require('uuid')
-sha1 = require('crypto-js/sha1')
-options = require('./options')
+import {v4} from 'uuid'
+import options from './options'
+
+sha1 = require('sha1')
 
 class Utils
-  @defaults: _.defaults
-  @keys: _.keys
-  @remove: _.remove
-  @omit: _.omit
+  @defaults: (obj, defaults) ->
+    for key, value of defaults
+      if obj[key] == undefined
+        obj[key] = value
+    return obj
+  @keys: Object.keys
+  @remove: (list, callback) ->
+    deletions = []
+    for el, index in [...list]
+      if callback(el, index)
+        list.splice(list.indexOf(el), 1)
+        deletions.push(el)
+    return deletions
+  @omit: (obj, ...keys) ->
+    results = {...obj}
+    for key in [].concat.apply([], keys)
+      delete results[key]
+    return results
   @log: (message) ->
     console.log(message) if options.debug
-  @uuid: uuid.v4
+  @uuid: v4
   @sha1: (text) ->
     sha1(text).toString()
   @random: (seed) ->
@@ -31,4 +44,5 @@ class Utils
     contains_weight = []
     contains_weight.push(value.weight?) for key, value of variants
     contains_weight.every (has_weight) -> has_weight or contains_weight.every (has_weight) -> !has_weight
-module.exports = Utils
+
+export default Utils
