@@ -26,6 +26,9 @@
     }
   },
   "dependencies": {
+    "basil.js": "^0.4.11",
+    "sha1": "^1.1.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
