@@ -41,7 +41,7 @@
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
-    "prepare": "webpack",
+    "build": "webpack",
     "analyze": "webpack --analyze",
     "test": "jest --verbose",
     "watch": "jest --watch",
