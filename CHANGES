@@ -1,3 +1,12 @@
+* 0.21.0 upgrade to webpacker 5 + jest (@joker-777)
+    - reduced the package size
+    - removed lodash dependency
+    - introduce jest + webpacker 5
+
+* 0.20.1 logging small fix
+
+* 0.20.0 adding RailsAdapter + internal refactoring
+
 * 0.19.1 exposing LamedAdapter though Alephbet
 
 * 0.19.0 adding LamedAdapter (inherits from GimelAdapter)
