@@ -5,7 +5,7 @@ module.exports =
   mode: "production"
   entry: "./src/alephbet.coffee"
   output:
-    filename: "alephbet.js"
+    filename: "alephbet.min.js"
     path: path.resolve(__dirname, "dist")
     library: "AlephBet"
     libraryTarget: "umd"
@@ -28,8 +28,6 @@ module.exports =
         loader: "coffee-loader"
         options:
           transpile:
-            presets: [
-              ["@babel/preset-env"]
-            ]
+            presets: [ "@babel/preset-env" ]
       ]
     ]
