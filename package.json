@@ -48,7 +48,7 @@
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
-  "main": "dist/alephbet.js",
+  "main": "dist/alephbet.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alephbet/alephbet.git"
