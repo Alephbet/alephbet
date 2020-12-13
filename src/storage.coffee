@@ -3,11 +3,9 @@ client = typeof window isnt 'undefined'
 # a thin wrapper for cases where window is not avaialble
 class Storage
   constructor: (@namespace='alephbet') ->
-    @storage = if client then store.get(@namespace) else {}
+    @storage = if client then window.localStorage else {}
   set: (key, value) ->
     @storage[key] = value
-    if client
-      store.set(@namespace, @storage)
     return value
   get: (key) ->
     @storage[key]
