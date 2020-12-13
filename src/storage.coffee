@@ -13,4 +13,4 @@ class Storage
 		@storage[key]
 		# store.get("#{@namespace}:#{key}")
 
-module.exports = Storage
+export default Storage
