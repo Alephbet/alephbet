@@ -1,17 +1,16 @@
-import Basil from 'basil.js'
+client = typeof window isnt 'undefined'
 
-store = new Basil(namespace: null)
-
-# a thin wrapper around basil.js for easy swapping
+# a thin wrapper for cases where window is not avaialble
 class Storage
-  constructor: (@namespace='alephbet') ->
-    @storage = store.get(@namespace) || {}
-  set: (key, value) ->
-    @storage[key] = value
-    store.set(@namespace, @storage)
-    return value
-  get: (key) ->
-    @storage[key]
-    # store.get("#{@namespace}:#{key}")
+	constructor: (@namespace='alephbet') ->
+		@storage = if client then store.get(@namespace) else {}
+	set: (key, value) ->
+		@storage[key] = value
+		if client
+			store.set(@namespace, @storage)
+		return value
+	get: (key) ->
+		@storage[key]
+		# store.get("#{@namespace}:#{key}")
 
-export default Storage
+module.exports = Storage
