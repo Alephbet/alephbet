@@ -4,7 +4,7 @@ client = typeof window isnt 'undefined'
 class Storage
   constructor: (@namespace='alephbet') ->
     if !client || typeof window.localStorage is 'undefined'
-      throw new Error('')
+      throw new Error('localStorage is not available')
     @storage = JSON.parse(window.localStorage[@namespace])
   set: (key, value) ->
     @storage[key] = value
