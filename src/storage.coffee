@@ -5,7 +5,7 @@ class Storage
       check = 'localstorage_check'
       localStorage.setItem(check, check);
       localStorage.removeItem(check);
-      @storage = JSON.parse(localStorage[@namespace])
+      @storage = JSON.parse(localStorage[@namespace] || "{}")
     catch
       throw new Error('localStorage is not available')
   set: (key, value) ->
