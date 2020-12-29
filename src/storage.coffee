@@ -1,14 +1,16 @@
-client = typeof window isnt 'undefined'
-
-# a thin wrapper for cases where window is not avaialble
+# a thin wrapper around localStorage checking if localStorage is available
 class Storage
   constructor: (@namespace='alephbet') ->
-    if !client || typeof window.localStorage is 'undefined'
+    try
+      check = 'localstorage_check'
+      localStorage.setItem(check, check);
+      localStorage.removeItem(check);
+      @storage = JSON.parse(localStorage[@namespace])
+    catch
       throw new Error('localStorage is not available')
-    @storage = JSON.parse(window.localStorage[@namespace])
   set: (key, value) ->
     @storage[key] = value
-    window.localStorage.set(@namespace, JSON.stringify(@storage))
+    localStorage.set(@namespace, JSON.stringify(@storage))
     return value
   get: (key) ->
     @storage[key]
