@@ -9,20 +9,10 @@
     "vendor",
     "test"
   ],
-  "browserify": {
-    "transform": [
-      "coffeeify"
-    ]
-  },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "coffee"
-    ],
-    "testRegex": "/test/.+_test\\.coffee?",
+    "testRegex": "/test/.+_test\\.js?",
     "transform": {
-      "^.+\\.jsx?$": "babel-jest",
-      "^.+\\.coffee$": "<rootDir>/test/preprocessor.js"
+      "^.+\\.jsx?$": "babel-jest"
     }
   },
   "dependencies": {
@@ -30,12 +20,23 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.12.7",
+    "@babel/core": "^7.12.10",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/eslint-plugin": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/plugin-transform-object-assign": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
     "babel-jest": "^26.6.3",
-    "coffee-loader": "^1.0.1",
-    "coffeescript": "^2.5.1",
-    "coffeetape": "^2.0.0",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.16.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prefer-arrow-functions": "^3.0.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^5.0.0",
     "jest": "^26.6.3",
     "lodash": "^4.17.20",
     "webpack": "^5.4.0",
@@ -43,14 +44,17 @@
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && yarn run build-commonjs && yarn run build-esm",
+    "build-commonjs": "babel --env-name commonjs --source-root src --out-dir dist --copy-files --quiet src",
+    "build-esm": "babel --env-name esm --source-root src --out-dir dist/esm --copy-files --quiet src",
     "analyze": "webpack --analyze",
     "test": "jest --verbose",
     "watch": "jest --watch",
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
-  "main": "dist/alephbet.min.js",
+  "main": "dist/alephbet.js",
+  "browser": "./dist/esm/alephbet.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alephbet/alephbet.git"
