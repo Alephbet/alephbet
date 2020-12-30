@@ -1,3 +1,9 @@
+* 0.22.0 BREAKING changes
+  - removed Basil.js dependency and using localStorage only
+  - if you need storage functionality previously provided by Basil.js
+    you can use your custom storage adapter
+    see https://github.com/Alephbet/alephbet#custom-storage-adapter
+
 * 0.21.0 upgrade to webpacker 5 + jest (@joker-777)
     - reduced the package size
     - removed lodash dependency
