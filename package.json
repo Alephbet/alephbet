@@ -20,6 +20,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/eslint-parser": "^7.12.1",
     "@babel/eslint-plugin": "^7.12.1",
@@ -45,8 +46,8 @@
   },
   "scripts": {
     "build": "webpack && yarn run build-commonjs && yarn run build-esm",
-    "build-commonjs": "babel --env-name commonjs --source-root src --out-dir dist --copy-files --quiet src",
-    "build-esm": "babel --env-name esm --source-root src --out-dir dist/esm --copy-files --quiet src",
+    "build-commonjs": "node_modules/.bin/babel --env-name commonjs --source-root src --out-dir dist --copy-files --quiet src",
+    "build-esm": "node_modules/.bin/babel --env-name esm --source-root src --out-dir dist/esm --copy-files --quiet src",
     "analyze": "webpack --analyze",
     "test": "jest --verbose",
     "watch": "jest --watch",
