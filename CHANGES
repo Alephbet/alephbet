@@ -1,3 +1,6 @@
+* 0.22.1 test release with github actions
+  - no code changes
+
 * 0.22.0 BREAKING changes
   - removed Basil.js dependency and using localStorage only
   - if you need storage functionality previously provided by Basil.js
