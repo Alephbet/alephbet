@@ -29,6 +29,7 @@ jobs:
         run: yarn build
 
       - name: Publish
-        run: npm publish --access public
+        run: |
+          npm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}" && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
