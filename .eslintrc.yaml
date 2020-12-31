@@ -1,0 +1,92 @@
+  env:
+    browser: true
+    node: true
+    es6: true
+  extends:
+    - "eslint:recommended"
+    - "plugin:jest/all"
+    - "standard"
+  parser: "@babel/eslint-parser"
+  parserOptions:
+    ecmaVersion: 6
+    sourceType: "module"
+    ecmaFeatures:
+      jsx: true
+  plugins:
+    - "prefer-arrow-functions"
+    - "import"
+    - "jest"
+    - "@babel"
+  rules:
+    # general rules
+
+    "no-var": "error"
+    "prefer-const": "error"
+    max-len:
+      - "error"
+      - "code": 80
+      - ignoreComments: true
+    "no-console":
+      - "error"
+    no-unused-vars:
+      - "error"
+      - argsIgnorePattern: "^_"
+        varsIgnorePattern: "^_"
+    "no-trailing-spaces": "error"
+    # don't allow trailing commas in object and array literals
+    "comma-dangle":
+      - "error"
+      - "never"
+    quotes:
+      - "error"
+      - "double"
+      - avoidEscape: true
+    camelcase: "off"
+    object-curly-spacing:
+      - "error"
+      - "never"
+    "prefer-arrow-callback": "error"
+    "no-else-return": "error"
+    space-before-function-paren:
+      - "error"
+      - "never"
+    "prefer-object-spread": "error"
+    newline-before-return: "off"
+    no-multi-str: "off"
+    prefer-promise-reject-errors: "warn"
+    no-unused-expressions: "off"
+    "@babel/no-unused-expressions": "error"
+
+    # if statement rules
+
+    curly:
+      - "error"
+      - "multi-line"
+    nonblock-statement-body-position: "off"
+    brace-style:
+      - "error"
+      - "1tbs"
+      - allowSingleLine: false
+
+    # import rules
+
+    "import/no-webpack-loader-syntax": "off"
+
+    # prefer-arrow-functions
+
+    func-style:
+      - "error"
+      - "declaration"
+      - allowArrowFunctions: true
+    "prefer-arrow-functions/prefer-arrow-functions":
+      - "error"
+      - classPropertiesAllowed: false
+        disallowPrototype: true
+        returnStyle: "implicit"
+
+    # jest
+
+    jest/no-hooks: "off"
+    jest/lowercase-name:
+      - "error"
+      - ignoreTopLevelDescribe: true
