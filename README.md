@@ -43,7 +43,7 @@ for more screencasts, tips and info, please check the [wiki](https://github.com/
 
 * Make sure your Google Universal analytics is set up.
 * [Download](https://github.com/gingerlime/alephbet/releases/latest) and include `alephbet.min.js` in the head section of your HTML.
-* Or include it your javascript module
+* Or import it in your javascript code
 
 ```javascript
 import {Experiment, Goal} from "alephbet" # ES6 module syntax
@@ -364,8 +364,8 @@ A couple of recommended resources:
 
 ### Commands
 
-* `yarn run build` - to build both development and minified version + prerequisites
-* `yarn run test` - will watch files and re-build using `jest`
+* `yarn run build` - to build distribution files
+* `yarn run watch` - will watch files and re-build using `jest`
 
 ## License
 
