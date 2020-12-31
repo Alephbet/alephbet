@@ -1,4 +1,4 @@
-import {Experiment} from "../src/alephbet"
+import Experiment from "../src/experiment"
 import _ from "lodash"
 
 let storage = null
