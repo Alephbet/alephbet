@@ -115,7 +115,7 @@ import {Experiment} from "alephbet"
 
 const button_color_experiment = new Experiment({
   name: 'button color',
-  trigger: function() {
+  trigger: () => {
     return window.location.href.match(/pricing/);
   },
   variants: { // ...
@@ -128,7 +128,7 @@ const mobile_browser = function() { // test if mobile browser };
 
 const big_header_experiment = new Experiment({
   name: 'big header',
-  trigger: function() { return logged_in_user() && mobile_browser(); },
+  trigger: () => { return logged_in_user() && mobile_browser(); },
   // ...
 });
 ```
@@ -188,7 +188,7 @@ import {Experiment} from "alephbet"
 const button_color_experiment = new Experiment({
   name: 'button color',
   user_id: get_user_id(),  // pass over the unique user id bound to this experiment
-  trigger: function() {
+  trigger: () => {
     // do not trigger this expeirment without a user_id
     return get_user_id() && other_condition();
   },
