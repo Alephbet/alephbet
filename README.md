@@ -43,10 +43,17 @@ for more screencasts, tips and info, please check the [wiki](https://github.com/
 
 * Make sure your Google Universal analytics is set up.
 * [Download](https://github.com/gingerlime/alephbet/releases/latest) and include `alephbet.min.js` in the head section of your HTML.
+* Or import it in your javascript code
+
+```javascript
+import {Experiment, Goal} from "alephbet" # ES6 module syntax
+const {Experiment, Goal} = require("alephbet") # commonJS syntax
+```
+
 * Create an experiment:
 
 ```javascript
-var button_color_experiment = new AlephBet.Experiment({
+const button_color_experiment = new AlephBet.Experiment({
   name: 'button color',  // the name of this experiment; required.
   variants: {  // variants for this experiment; required.
     blue: {
@@ -67,7 +74,7 @@ var button_color_experiment = new AlephBet.Experiment({
 
 ```javascript
 // creating a goal
-var button_clicked_goal = new AlephBet.Goal('button clicked');
+const button_clicked_goal = new AlephBet.Goal('button clicked');
 $('#my-btn').on('click', function() {
   // The chosen variant will be tied to the goal automatically
   button_clicked_goal.complete();
@@ -80,7 +87,7 @@ button_clicked_goal.add_experiment(button_color_experiment);
 button_color_experiment.add_goal(button_clicked_goal);
 
 // tracking non-unique goals, e.g. page views
-var page_views = new AlephBet.Goal('page view', {unique: false});
+const page_views = new AlephBet.Goal('page view', {unique: false});
 ```
 
 * view results on your Google Analytics Event Tracking Section. The experiment name + variation will be assigned to  `actions`, and Visitors or Goals to `label`. e.g.
@@ -104,9 +111,11 @@ audience for the experiments (e.g. mobile users, logged-in etc).
 Experiments automatically start by default. However, a trigger function can be provided, to limit the audience or the
 page(s) where the experiment "kicks-off".
 ```javascript
-var button_color_experiment = new AlephBet.Experiment({
+import {Experiment} from "alephbet"
+
+const button_color_experiment = new Experiment({
   name: 'button color',
-  trigger: function() {
+  trigger: () => {
     return window.location.href.match(/pricing/);
   },
   variants: { // ...
@@ -114,12 +123,12 @@ var button_color_experiment = new AlephBet.Experiment({
 });
 
 // triggers can be assigned to a variable and shared / re-used
-var logged_in_user = function() { return document.cookie.match(/__session/); };
-var mobile_browser = function() { // test if mobile browser };
+const logged_in_user = function() { return document.cookie.match(/__session/); };
+const mobile_browser = function() { // test if mobile browser };
 
-var big_header_experiment = new AlephBet.Experiment({
+const big_header_experiment = new Experiment({
   name: 'big header',
-  trigger: function() { return logged_in_user() && mobile_browser(); },
+  trigger: () => { return logged_in_user() && mobile_browser(); },
   // ...
 });
 ```
@@ -139,8 +148,10 @@ to implement [Multi Armed Bandit testing](https://conversionxl.com/blog/bandit-t
 NOTE: Weights can be any integer value. **Do not use floats**. You can use any number, but it's probably easiest
       to treat it as a percentage, e.g. use weights of 80, 20 to allocate ~80% to one variant vs. ~20% to the other.
 
-```
-var button_color_experiment = new AlephBet.Experiment({
+```javascript
+import {Experiment} from "alephbet"
+
+const button_color_experiment = new Experiment({
   name: 'button color',  // the name of this experiment; required.
   variants: {  // variants for this experiment; required.
     blue: {
@@ -172,10 +183,12 @@ You can now pass a `user_id` to the experiment as an optional parameter.
 This allows experiment to work across devices on a per-user basis.
 
 ```javascript
-var button_color_experiment = new AlephBet.Experiment({
+import {Experiment} from "alephbet"
+
+const button_color_experiment = new Experiment({
   name: 'button color',
   user_id: get_user_id(),  // pass over the unique user id bound to this experiment
-  trigger: function() {
+  trigger: () => {
     // do not trigger this expeirment without a user_id
     return get_user_id() && other_condition();
   },
@@ -217,23 +230,25 @@ safe and idempotent (unless unique is false).
 Here's a short sample of tracking multiple goals over multiple experiments:
 
 ```javascript
+import {Experiment, Goal} from "alephbet"
+
 // main goal - button click
-var button_click_goal = new AlephBet.Goal('button click');
+const button_click_goal = new Goal('button click');
 $('#my-btn').on('click', function() {
   button_clicked_goal.complete();
 });
 
 // engagement - any click on the page
-var engagement = new AlephBet.Goal('engagement');
+const engagement = new Goal('engagement');
 $('html').on('click', function() {
   engagement.complete();
 });
 
-var all_goals = [button_click_goal, engagement];
+const all_goals = [button_click_goal, engagement];
 
 // experiments
-var button_color_experiment = new AlephBet.Experiment({ /* ... */ });
-var buy_button_cta_experiment = new AlephBet.Experiment({ /* ... */ });
+const button_color_experiment = new Experiment({ /* ... */ });
+const buy_button_cta_experiment = new Experiment({ /* ... */ });
 
 // adding all goals to experiments
 _(all_goals).each(function (goal) {
@@ -272,7 +287,7 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
         projectId: "ENTER YOUR PROJECT ID",
         writeKey: "ENTER YOUR WRITE KEY"
     });
-    var tracking_adapter = {
+    const tracking_adapter = {
         experiment_start: function(experiment, variant) {
             keen_client.addEvent(experiment.name, {variant: variant, event: 'participate'});
         },
@@ -280,7 +295,7 @@ Here's an example for integrating an adapter for [keen.io](https://keen.io)
             keen_client.addEvent(experiment.name, {variant: variant, event: event_name});
         }
     };
-    var my_experiment = new AlephBet.Experiment({
+    const my_experiment = new AlephBet.Experiment({
         name: 'my experiment',
         variants: { // ...
         },
@@ -302,7 +317,7 @@ Here's a simple example of a cookie storage adapter with expiry of 30 days, usin
 <script src="/path/to/js.cookie.js"></script>
 <script type="text/javascript">
     // NOTE: using JSON stringify / parse to allow storing more complex values
-    var storage_adapter = {
+    const storage_adapter = {
         set: function(key, value) {
             Cookies.set(key, JSON.stringify(value), {expires: 30});
         },
@@ -310,18 +325,25 @@ Here's a simple example of a cookie storage adapter with expiry of 30 days, usin
             try { return JSON.parse(Cookies.get(key)); } catch(e) { return Cookies.get(key); }
         }
     };
-    var my_experiment = new AlephBet.Experiment({
+    const my_experiment = new AlephBet.Experiment({
         name: 'my experiment',
         variants: { // ...
         },
         storage_adapter: storage_adapter,
         // ...
     });
+</script> 
 ```
 
 ### Debug mode
 
-To set more verbose logging to the browser console, use `AlephBet.options.debug = true`.
+To set more verbose logging to the browser console, use
+
+```javascript
+import Alephbet from "alephbet"
+
+AlephBet.options.debug = true`
+````
 
 ### Other install options
 
@@ -340,15 +362,10 @@ A couple of recommended resources:
 
 ## Development
 
-AlephBet uses npm / browserify with the following 3rd party libraries:
-
-* [lodash](https://lodash.com/) (using a custom build, to save space)
-* [store.js](https://github.com/marcuswestin/store.js) - for localStorage
-
 ### Commands
 
-* `npm run build` - to build both development and minified version + prerequisites
-* `npm run watch` - will watch files and re-build using `watchify`
+* `yarn run build` - to build distribution files
+* `yarn run watch` - will watch files and re-build using `jest`
 
 ## License
 
