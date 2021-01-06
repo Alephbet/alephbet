@@ -7,7 +7,7 @@ import utils from "../utils"
 // # - url: track URL to post events to
 // # - namepsace (optional): allows setting different environments etc
 // # - storage (optional): storage adapter for the queue
-class TrackingAdapter {
+class AlephbetAdapter {
   static queue_name = "_alephbet_queue"
 
   constructor(url, namespace = "alephbet", storage = LocalStorageAdapter) {
@@ -105,4 +105,4 @@ class TrackingAdapter {
   }
 }
 
-export default TrackingAdapter
+export default AlephbetAdapter

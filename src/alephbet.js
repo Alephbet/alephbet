@@ -5,7 +5,7 @@ export {default as Experiment} from "./experiment"
 export {default as utils} from "./utils"
 export {default as options} from "./options"
 export {default as GimelAdapter} from "./adapters/gimel_adapter"
-export {default as TrackingAdapter} from "./adapters/tracking_adapter"
+export {default as AlephbetAdapter} from "./adapters/alephbet_adapter"
 export {default as LocalStorageAdapter} from "./adapters/local_storage_adapter"
 export {
   default as PersistentQueueGoogleAnalyticsAdapter

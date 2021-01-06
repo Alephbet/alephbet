@@ -1,4 +1,4 @@
-import TrackingAdapter from "./tracking_adapter"
+import AlephbetAdapter from "./alephbet_adapter"
 import utils from "../utils"
 
 // # Adapter for using the gimel backend. See https://github.com/Alephbet/gimel
@@ -7,8 +7,8 @@ import utils from "../utils"
 // # - url: Gimel track URL to post events to
 // # - namepsace: namespace for Gimel (allows setting different environments etc)
 // # - storage (optional) - storage adapter for the queue
-class GimelAdapter extends TrackingAdapter {
-  static queue_name = "_lamed_queue"
+class GimelAdapter extends AlephbetAdapter {
+  static queue_name = "_gimel_queue"
 
   _user_uuid(experiment, goal) {
     if (!experiment.user_id) return utils.uuid()
