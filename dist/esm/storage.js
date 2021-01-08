@@ -17,7 +17,6 @@ var Storage = /*#__PURE__*/function () {
       var check = "localstorage_check";
       localStorage.setItem(check, check);
       localStorage.removeItem(check);
-      this.storage = JSON.parse(localStorage.getItem(this.namespace) || "{}");
     } catch (_unused) {
       throw new Error("localStorage is not available");
     }
@@ -26,14 +25,15 @@ var Storage = /*#__PURE__*/function () {
   _createClass(Storage, [{
     key: "set",
     value: function set(key, value) {
-      this.storage[key] = value;
-      localStorage.setItem(this.namespace, JSON.stringify(this.storage));
+      var storage = JSON.parse(localStorage.getItem(this.namespace) || "{}");
+      storage[key] = value;
+      localStorage.setItem(this.namespace, JSON.stringify(storage));
       return value;
     }
   }, {
     key: "get",
     value: function get(key) {
-      return this.storage[key];
+      return JSON.parse(localStorage.getItem(this.namespace) || "{}")[key];
     }
   }]);
 
