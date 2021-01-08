@@ -14,7 +14,7 @@ class Storage {
       const check = "localstorage_check";
       localStorage.setItem(check, check);
       localStorage.removeItem(check);
-      this.storage = JSON.parse(localStorage[this.namespace] || "{}");
+      this.storage = JSON.parse(localStorage.getItem(this.namespace) || "{}");
     } catch (_unused) {
       throw new Error("localStorage is not available");
     }
@@ -22,12 +22,12 @@ class Storage {
 
   set(key, value) {
     this.storage[key] = value;
-    localStorage.set(this.namespace, JSON.stringify(this.storage));
+    localStorage.setItem(this.namespace, JSON.stringify(this.storage));
     return value;
   }
 
   get(key) {
-    return this.storage[key]; // store.get("#{@namespace}:#{key}")
+    return this.storage[key];
   }
 
 }
