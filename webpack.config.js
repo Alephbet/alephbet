@@ -9,7 +9,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     library: "AlephBet",
     libraryTarget: "umd",
-    globalObject: "this"
+    globalObject: "window"
   },
   watchOptions: {
     ignored: /node_modules/
