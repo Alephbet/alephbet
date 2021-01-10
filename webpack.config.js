@@ -8,8 +8,7 @@ module.exports = {
     filename: "alephbet.min.js",
     path: path.resolve(__dirname, "dist"),
     library: "AlephBet",
-    libraryTarget: "umd",
-    umdNamedDefine: true
+    libraryTarget: "window"
   },
   watchOptions: {
     ignored: /node_modules/
