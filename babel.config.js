@@ -1,7 +1,7 @@
 module.exports = (api) => {
   api.cache(true)
   return {
-    presets: [["@babel/preset-env", {modules: false}]],
+    presets: [["@babel/preset-env", {modules: "commonjs"}]],
     plugins: [
       // transforms object?.method?.method
       "@babel/plugin-proposal-optional-chaining",

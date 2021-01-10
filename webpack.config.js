@@ -8,13 +8,16 @@ module.exports = {
     filename: "alephbet.min.js",
     path: path.resolve(__dirname, "dist"),
     library: "AlephBet",
-    libraryTarget: "assign",
-    globalObject: "window"
+    libraryTarget: "umd",
+    globalObject: "this"
   },
   watchOptions: {
     ignored: /node_modules/
   },
   devtool: "source-map",
+  optimization: {
+    minimize: false
+  },
   resolve: {
     modules: [
       "src",
