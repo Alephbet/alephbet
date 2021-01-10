@@ -9,6 +9,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     library: "AlephBet",
     libraryTarget: "umd",
+    umdNamedDefine: true,
     globalObject: "this"
   },
   watchOptions: {
