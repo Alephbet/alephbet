@@ -47,12 +47,15 @@ for more screencasts, tips and info, please check the [wiki](https://github.com/
 
 ```javascript
 import {Experiment, Goal} from "alephbet" # ES6 module syntax
+import * as AlephBet from "alephbet" # alternative (backwards-compatible) ES6 syntax
 const {Experiment, Goal} = require("alephbet") # commonJS syntax
 ```
 
 * Create an experiment:
 
 ```javascript
+import * as AlephBet from "alephbet";
+
 const button_color_experiment = new AlephBet.Experiment({
   name: 'button color',  // the name of this experiment; required.
   variants: {  // variants for this experiment; required.
