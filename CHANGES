@@ -1,3 +1,6 @@
+* 0.23.1 fix gimel/lamed undefined data in tracking
+  - see https://github.com/Alephbet/alephbet/pull/40#issuecomment-756601141
+
 * 0.23.0 improve storage
   - #45
 
