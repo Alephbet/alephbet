@@ -56,8 +56,8 @@ class AlephbetAdapter {
     const xhr = new XMLHttpRequest();
     let params = [];
 
-    for (const [k, v] in Object.entries(data)) {
-      params.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+    for (const key of Object.keys(data)) {
+      params.push(`${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`);
     }
 
     params = params.join("&").replace(/%20/g, "+");
