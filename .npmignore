@@ -2,5 +2,3 @@ npm-debug.log
 yarn-error.log
 node_modules/*
 lib
-dist/esm
-dist/commonjs
