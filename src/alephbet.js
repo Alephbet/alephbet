@@ -1,7 +1,8 @@
 import options from "./options"
+import Goal from "./goal"
+import Experiment from "./experiment"
 
-export {default as Goal} from "./goal"
-export {default as Experiment} from "./experiment"
+export {Goal, Experiment}
 export {default as utils} from "./utils"
 export {default as options} from "./options"
 export {default as GimelAdapter} from "./adapters/gimel_adapter"
@@ -14,4 +15,8 @@ export {
   default as GoogleUniversalAnalyticsAdapter
 } from "./adapters/google_universal_analytics_adapter"
 
-export default {options}
+export default {
+  options,
+  Goal,
+  Experiment
+}
