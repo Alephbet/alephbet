@@ -15,6 +15,11 @@ describe("GimelAdapters", () => {
     jest.spyOn(gimel, "_remove_quuid").mockImplementation(() => "callback")
   })
 
+  it("uses the correct queue name", () => {
+    expect.assertions(1)
+    expect(gimel.queue_name).toBe("_gimel_queue")
+  })
+
   it("doesn't include the goal in the hash calculation", () => {
     expect.assertions(2)
     const experiment = {name: "experiment", user_id: "yuzu"}

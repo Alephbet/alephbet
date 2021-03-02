@@ -13,6 +13,11 @@ describe("AlephbetAdapter", () => {
     jest.spyOn(adapter, "_remove_quuid").mockImplementation(() => "callback")
   })
 
+  it("uses the correct queue name", () => {
+    expect.assertions(1)
+    expect(adapter.queue_name).toBe("_alephbet_queue")
+  })
+
   it("start an experiment", () => {
     expect.assertions(1)
     jest.spyOn(adapter, "_ajax_get").mockImplementation()

@@ -2,7 +2,7 @@ import LocalStorageAdapter from "./local_storage_adapter"
 import utils from "../utils"
 
 class PersistentQueueKeenAdapter {
-  static queue_name = "_keen_queue"
+  queue_name = "_keen_queue"
 
   constructor(keen_client, storage = LocalStorageAdapter) {
     this.client = keen_client
