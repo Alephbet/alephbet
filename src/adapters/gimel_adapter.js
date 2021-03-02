@@ -8,7 +8,7 @@ import utils from "../utils"
 // # - namepsace: namespace for Gimel (allows setting different environments etc)
 // # - storage (optional) - storage adapter for the queue
 class GimelAdapter extends AlephbetAdapter {
-  static queue_name = "_gimel_queue"
+  queue_name = "_gimel_queue"
 
   _user_uuid(experiment, goal) {
     if (!experiment.user_id) return utils.uuid()

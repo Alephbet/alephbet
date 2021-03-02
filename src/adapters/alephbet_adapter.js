@@ -8,7 +8,7 @@ import utils from "../utils"
 // # - namepsace (optional): allows setting different environments etc
 // # - storage (optional): storage adapter for the queue
 class AlephbetAdapter {
-  static queue_name = "_alephbet_queue"
+  queue_name = "_alephbet_queue"
 
   constructor(url, namespace = "alephbet", storage = LocalStorageAdapter) {
     this._storage = storage

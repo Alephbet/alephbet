@@ -2,8 +2,8 @@ import utils from "../utils"
 import LocalStorageAdapter from "./local_storage_adapter"
 
 class PersistentQueueGoogleAnalyticsAdapter {
-  static namespace = "alephbet"
-  static queue_name = "_ga_queue"
+  namespace = "alephbet"
+  queue_name = "_ga_queue"
 
   constructor(storage = LocalStorageAdapter) {
     this._storage = storage
