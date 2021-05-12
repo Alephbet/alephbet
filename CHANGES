@@ -1,3 +1,7 @@
+NOTE: Futue changes go into the release info.
+
+## Old changes
+
 * 0.23.1 fix gimel/lamed undefined data in tracking
   - see https://github.com/Alephbet/alephbet/pull/40#issuecomment-756601141
 
