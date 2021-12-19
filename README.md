@@ -46,15 +46,14 @@ for more screencasts, tips and info, please check the [wiki](https://github.com/
 * Or import it in your javascript code
 
 ```javascript
-import {Experiment, Goal} from "alephbet" # ES6 module syntax
-import * as AlephBet from "alephbet" # alternative (backwards-compatible) ES6 syntax
-const {Experiment, Goal} = require("alephbet") # commonJS syntax
+import AlephBet from "alephbet" # ES6 module syntax
+const AlephBet = require("alephbet") # commonJS syntax
 ```
 
 * Create an experiment:
 
 ```javascript
-import * as AlephBet from "alephbet";
+import AlephBet from "alephbet";
 
 const button_color_experiment = new AlephBet.Experiment({
   name: 'button color',  // the name of this experiment; required.
@@ -114,9 +113,9 @@ audience for the experiments (e.g. mobile users, logged-in etc).
 Experiments automatically start by default. However, a trigger function can be provided, to limit the audience or the
 page(s) where the experiment "kicks-off".
 ```javascript
-import {Experiment} from "alephbet"
+import AlephBet from "alephbet";
 
-const button_color_experiment = new Experiment({
+const button_color_experiment = new Alephbet.Experiment({
   name: 'button color',
   trigger: () => {
     return window.location.href.match(/pricing/);
@@ -129,7 +128,7 @@ const button_color_experiment = new Experiment({
 const logged_in_user = function() { return document.cookie.match(/__session/); };
 const mobile_browser = function() { // test if mobile browser };
 
-const big_header_experiment = new Experiment({
+const big_header_experiment = new Alephbet.Experiment({
   name: 'big header',
   trigger: () => { return logged_in_user() && mobile_browser(); },
   // ...
@@ -186,9 +185,9 @@ You can now pass a `user_id` to the experiment as an optional parameter.
 This allows experiment to work across devices on a per-user basis.
 
 ```javascript
-import {Experiment} from "alephbet"
+import AlephBet from "alephbet";
 
-const button_color_experiment = new Experiment({
+const button_color_experiment = new Alephbet.Experiment({
   name: 'button color',
   user_id: get_user_id(),  // pass over the unique user id bound to this experiment
   trigger: () => {
@@ -233,16 +232,16 @@ safe and idempotent (unless unique is false).
 Here's a short sample of tracking multiple goals over multiple experiments:
 
 ```javascript
-import {Experiment, Goal} from "alephbet"
+import AlephBet from "alephbet";
 
 // main goal - button click
-const button_click_goal = new Goal('button click');
+const button_click_goal = new AlephBet.Goal('button click');
 $('#my-btn').on('click', function() {
   button_clicked_goal.complete();
 });
 
 // engagement - any click on the page
-const engagement = new Goal('engagement');
+const engagement = new AlephBet.Goal('engagement');
 $('html').on('click', function() {
   engagement.complete();
 });
@@ -250,8 +249,8 @@ $('html').on('click', function() {
 const all_goals = [button_click_goal, engagement];
 
 // experiments
-const button_color_experiment = new Experiment({ /* ... */ });
-const buy_button_cta_experiment = new Experiment({ /* ... */ });
+const button_color_experiment = new AlephBet.Experiment({ /* ... */ });
+const buy_button_cta_experiment = new AlephBet.Experiment({ /* ... */ });
 
 // adding all goals to experiments
 _(all_goals).each(function (goal) {

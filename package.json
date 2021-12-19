@@ -1,6 +1,6 @@
 {
   "name": "alephbet",
-  "version": "0.23.1",
+  "version": "0.24.7",
   "author": "Yoav Aner <yoav@gingerlime.com>",
   "files": [
     "lib",
@@ -45,8 +45,9 @@
     "webpack-cli": "^4.2.0"
   },
   "scripts": {
+    "prepare": "yarn run build-commonjs && yarn run build-esm",
     "build": "webpack && yarn run build-commonjs && yarn run build-esm",
-    "build-commonjs": "node_modules/.bin/babel --env-name commonjs --source-root src --out-dir dist --copy-files --quiet src",
+    "build-commonjs": "node_modules/.bin/babel --env-name commonjs --source-root src --out-dir dist/commonjs --copy-files --quiet src",
     "build-esm": "node_modules/.bin/babel --env-name esm --source-root src --out-dir dist/esm --copy-files --quiet src",
     "analyze": "webpack --analyze",
     "test": "jest --verbose",
@@ -54,7 +55,7 @@
     "debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "description": "AlephBet is a pure-javascript A/B (multivariate) testing framework for developers.",
-  "main": "dist/alephbet.js",
+  "main": "dist/commonjs/alephbet.js",
   "browser": "./dist/esm/alephbet.js",
   "repository": {
     "type": "git",
