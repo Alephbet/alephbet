@@ -32,7 +32,7 @@ class Experiment {
     const variant = this.get_stored_variant()
     if (variant) {
       // a variant was already chosen. activate it
-      utils.log(`${variant} active`)
+      utils.log("variant already active", {experiment: this.options.name, variant})
       this.activate_variant(variant)
     } else {
       this.conditionally_activate_variant()
@@ -46,12 +46,13 @@ class Experiment {
 
   // if experiment conditions match, pick and activate a variant, track experiment start
   conditionally_activate_variant() {
+    const experiment = this.options.name
     if (!this.options.trigger()) return
-    utils.log("trigger set")
+    utils.log("trigger set", {experiment})
     if (!this.in_sample()) return
-    utils.log("in sample")
+    utils.log("in sample", {experiment})
     const variant = this.pick_variant()
-    utils.log(`${variant} picked`)
+    utils.log("variant picked", {experiment, variant})
     this.tracking().experiment_start(this, variant)
     this.activate_variant(variant)
   }
@@ -99,7 +100,7 @@ class Experiment {
     // ABBBCCCCCC
     // ==^
     // Select B
-    utils.log("picking weighted variant")
+    utils.log("picking weighted variant", {experiment: this.options.name})
     const weights_sum = utils.sum_weights(this.variants)
     let weighted_index = Math.ceil((this._random("variant") * weights_sum))
     for (const [key, value] of Object.entries(this.variants)) {
@@ -111,7 +112,7 @@ class Experiment {
   }
 
   pick_unweighted_variant() {
-    utils.log("picking unweighted variant")
+    utils.log("picking unweighted variant", {experiment: this.options.name})
     const partitions = 1.0 / this.variant_names.length
     const chosen_partition = Math.floor(this._random("variant") / partitions)
     return this.variant_names[chosen_partition]
