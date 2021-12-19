@@ -38,10 +38,14 @@ const Utils = {
     return results
   },
 
-  log: (message) => {
+  log: (message, extra) => {
     if (options.debug) {
       // eslint-disable-next-line no-console
-      console.log(message)
+      if (!!extra) {
+        console.log(`[Alephbet] ${message}`, extra)
+      } else {
+        console.log(`[Alephbet] ${message}`)
+      }
     }
   },
 

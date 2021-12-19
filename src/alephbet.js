@@ -31,7 +31,7 @@ export class Experiment {
   }
 
   run() {
-    utils.log(`running with options: ${JSON.stringify(this.options)}`)
+    utils.log("running...", this.options)
     const variant = this.get_stored_variant()
     if (variant) {
       // a variant was already chosen. activate it
@@ -54,6 +54,7 @@ export class Experiment {
     if (!this.in_sample()) return
     utils.log("in sample")
     const variant = this.pick_variant()
+    utils.log(`${variant} picked`)
     this.tracking().experiment_start(this, variant)
     this.activate_variant(variant)
   }
@@ -70,8 +71,11 @@ export class Experiment {
       this.storage().set(`${this.options.name}:${goal_name}`, true)
     }
     utils.log(
-      "experiment: " +
-      `${this.options.name} variant:${variant} goal:${goal_name} complete`
+      "experiment goal complete", {
+        name: this.options.name,
+        variant,
+        goal: goal_name
+      }
     )
     this.tracking().goal_complete(this, variant, goal_name, props)
   }
@@ -82,7 +86,6 @@ export class Experiment {
 
   pick_variant() {
     const all_variants_have_weights = utils.check_weights(this.variants)
-    utils.log(`all variants have weights: ${all_variants_have_weights}`)
     if (all_variants_have_weights) {
       return this.pick_weighted_variant()
     }
@@ -99,6 +102,7 @@ export class Experiment {
     // ABBBCCCCCC
     // ==^
     // Select B
+    utils.log("picking weighted variant")
     const weights_sum = utils.sum_weights(this.variants)
     let weighted_index = Math.ceil((this._random("variant") * weights_sum))
     for (const [key, value] of Object.entries(this.variants)) {
@@ -110,11 +114,10 @@ export class Experiment {
   }
 
   pick_unweighted_variant() {
+    utils.log("picking unweighted variant")
     const partitions = 1.0 / this.variant_names.length
     const chosen_partition = Math.floor(this._random("variant") / partitions)
-    const variant = this.variant_names[chosen_partition]
-    utils.log(`${variant} picked`)
-    return variant
+    return this.variant_names[chosen_partition]
   }
 
   in_sample() {

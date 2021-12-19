@@ -27,7 +27,7 @@ export class AlephbetAdapter {
   }
 
   _jquery_get(url, data, callback) {
-    utils.log("send request using jQuery")
+    utils.log("send request using jQuery", {url, data})
     return window.jQuery.ajax({
       method: "GET",
       url,
@@ -37,7 +37,7 @@ export class AlephbetAdapter {
   }
 
   _plain_js_get(url, data, callback) {
-    utils.log("fallback on plain js xhr")
+    utils.log("fallback on plain js xhr", {url, data})
     const xhr = new XMLHttpRequest()
     let params = []
     for (const key of Object.keys(data)) {
@@ -78,8 +78,12 @@ export class AlephbetAdapter {
 
   _track(experiment, variant, goal) {
     utils.log(
-      "Persistent Queue track: " +
-      `${this.namespace}, ${experiment.name}, ${variant}, ${goal.name}`
+      "Persistent Queue track", {
+        namespace: this.namespace,
+        experiment: experiment.name,
+        variant,
+        goal: goal.name
+      }
     )
     if (this._queue.length > 100) this._queue.shift()
     this._queue.push({
@@ -175,8 +179,8 @@ export class PersistentQueueGoogleAnalyticsAdapter {
 
   _track(category, action, label) {
     utils.log(
-      "Persistent Queue Google Universal Analytics track: " +
-      `${category}, ${action}, ${label}`
+      "Persistent Queue Google Universal Analytics track",
+      {category, action, label}
     )
     if (this._queue.length > 100) this._queue.shift()
     this._queue.push({uuid: utils.uuid(), category, action, label})
@@ -235,8 +239,9 @@ export class PersistentQueueKeenAdapter {
 
   _track(experiment, variant, goal) {
     utils.log(
-      "Persistent Queue Keen track: " +
-      `${experiment.name}, ${variant}, ${goal.name}`
+      "Persistent Queue Keen track", {
+        experiment: experiment.name, variant, goal: goal.name
+      }
     )
     if (this._queue.length > 100) this._queue.shift()
     this._queue.push({
@@ -266,7 +271,8 @@ export class GoogleUniversalAnalyticsAdapter {
 
   static _track(category, action, label) {
     utils.log(
-      `Google Universal Analytics track: ${category}, ${action}, ${label}`
+      "Google Universal Analytics track",
+      {category, action, label}
     )
     if (typeof global.ga !== "function") {
       throw new Error(
