@@ -36,8 +36,8 @@ class PersistentQueueGoogleAnalyticsAdapter {
 
   _track(category, action, label) {
     utils.log(
-      "Persistent Queue Google Universal Analytics track: " +
-      `${category}, ${action}, ${label}`
+      "Persistent Queue Google Universal Analytics track",
+      {category, action, label}
     )
     if (this._queue.length > 100) this._queue.shift()
     this._queue.push({uuid: utils.uuid(), category, action, label})

@@ -4,8 +4,8 @@ class GoogleUniversalAnalyticsAdapter {
   static namespace = "alephbet"
 
   static _track(category, action, label) {
-    utils.log(
-      `Google Universal Analytics track: ${category}, ${action}, ${label}`
+    utils.log("Google Universal Analytics track",
+      {category, action, label}
     )
     if (typeof global.ga !== "function") {
       throw new Error(

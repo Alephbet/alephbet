@@ -42,10 +42,8 @@ class PersistentQueueKeenAdapter {
   }
 
   _track(experiment, variant, goal) {
-    utils.log(
-      "Persistent Queue Keen track: " +
-      `${experiment.name}, ${variant}, ${goal.name}`
-    )
+    utils.log("Persistent Queue Keen track",
+      {experiment: experiment.name, variant, goal: goal.name})
     if (this._queue.length > 100) this._queue.shift()
     this._queue.push({
       experiment_name: experiment.name,

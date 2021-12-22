@@ -27,7 +27,7 @@ class AlephbetAdapter {
   }
 
   _jquery_get(url, data, callback) {
-    utils.log("send request using jQuery")
+    utils.log("send request using jQuery", {url, data})
     return window.jQuery.ajax({
       method: "GET",
       url,
@@ -37,7 +37,7 @@ class AlephbetAdapter {
   }
 
   _plain_js_get(url, data, callback) {
-    utils.log("fallback on plain js xhr")
+    utils.log("fallback on plain js xhr", {url, data})
     const xhr = new XMLHttpRequest()
     let params = []
     for (const key of Object.keys(data)) {
@@ -78,8 +78,12 @@ class AlephbetAdapter {
 
   _track(experiment, variant, goal) {
     utils.log(
-      "Persistent Queue track: " +
-      `${this.namespace}, ${experiment.name}, ${variant}, ${goal.name}`
+      "Persistent Queue track", {
+        namespace: this.namespace,
+        experiment: experiment.name,
+        variant,
+        goal: goal.name
+      }
     )
     if (this._queue.length > 100) this._queue.shift()
     this._queue.push({
