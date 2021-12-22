@@ -42,7 +42,8 @@ const Utils = {
     if (options.debug) {
       // eslint-disable-next-line no-console
       if (!!extra) {
-        console.log(`[Alephbet] ${message}`, extra)
+        // see https://developer.mozilla.org/en-US/docs/Web/API/Console/log#logging_objects
+        console.log(`[Alephbet] ${message}`, JSON.parse(JSON.stringify(extra)))
       } else {
         console.log(`[Alephbet] ${message}`)
       }
