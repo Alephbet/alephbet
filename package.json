@@ -38,7 +38,7 @@
     "eslint-plugin-prefer-arrow-functions": "^3.0.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
-    "jest": "^26.6.3",
+    "jest": "^27.4.7",
     "lodash": "^4.17.20",
     "webpack": "^5.4.0",
     "webpack-bundle-analyzer": "^4.1.0",
