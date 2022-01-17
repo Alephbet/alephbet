@@ -87,6 +87,6 @@
     # jest
 
     jest/no-hooks: "off"
-    jest/lowercase-name:
+    jest/prefer-lowercase-title:
       - "error"
       - ignoreTopLevelDescribe: true
