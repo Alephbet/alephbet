@@ -28,7 +28,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "@babel/plugin-transform-object-assign": "^7.16.7",
     "@babel/preset-env": "^7.16.8",
-    "babel-jest": "^27.4.6",
+    "babel-jest": "^28.0.1",
     "babel-loader": "^8.2.3",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
