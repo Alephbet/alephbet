@@ -2,7 +2,7 @@ import LocalStorageAdapter from "./local_storage_adapter"
 import utils from "../utils"
 
 // # A parent class Adapter for using the Alephbet backend API.
-// # uses jQuery to send data if `$.ajax` is found. Falls back on plain js xhr
+// # uses fetch to send data with keepalive. Falls back on plain js xhr
 // # params:
 // # - url: track URL to post events to
 // # - namepsace (optional): allows setting different environments etc
@@ -26,25 +26,28 @@ class AlephbetAdapter {
     }
   }
 
-  _jquery_get(url, data, callback) {
-    utils.log("send request using jQuery", {url, data})
-    return window.jQuery.ajax({
-      method: "GET",
-      url,
-      data,
-      success: callback
-    })
-  }
-
-  _plain_js_get(url, data, callback) {
-    utils.log("fallback on plain js xhr", {url, data})
-    const xhr = new XMLHttpRequest()
+  _merge_url_data(url, data) {
     let params = []
     for (const key of Object.keys(data)) {
       params.push(`${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
     }
     params = params.join("&").replace(/%20/g, "+")
-    xhr.open("GET", `${url}?${params}`)
+    return `${url}?${params}`
+  }
+
+  _fetch_get(url, data, callback) {
+    utils.log("send request using fetch", {url, data})
+    return window.fetch(this._merge_url_data(url, data), {
+      method: "GET",
+      keepalive: true
+    }).then((result) => { if (result.status === 200) { callback() } })
+  }
+
+  _plain_js_get(url, data, callback) {
+    utils.log("fallback on plain js xhr", {url, data})
+    const xhr = new XMLHttpRequest()
+
+    xhr.open("GET", this._merge_url_data(url, data))
     xhr.onload = () => {
       if (xhr.status === 200) callback()
     }
@@ -52,8 +55,8 @@ class AlephbetAdapter {
   }
 
   _ajax_get(url, data, callback) {
-    if (window.jQuery?.ajax) {
-      return this._jquery_get(url, data, callback)
+    if (window.fetch) {
+      return this._fetch_get(url, data, callback)
     }
     return this._plain_js_get(url, data, callback)
   }
