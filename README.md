@@ -4,11 +4,12 @@ AlephBet is a pure-javascript A/B (multivariate) testing framework for developer
 
 Key Features:
 
-* **NEW**: run your own tracking backend on Rails with the [alephbet](https://github.com/Alephbet/alephbet-rails) rubygem (still experimental)
-* **NEW**: run your own tracking backend on AWS Lambda with [Lamed](https://github.com/Alephbet/lamed) (recommended)
+* A choice of tracking backends:
+  - AWS Lambda with [Lamed](https://github.com/Alephbet/lamed) (recommended)
+  - Ruby on Rails with the [alephbet](https://github.com/Alephbet/alephbet-rails) rubygem (still experimental)
+  - [Gimel](https://github.com/Alephbet/gimel) (no longer recommended)
 * Weighted variants. See https://github.com/Alephbet/alephbet/pull/20
 * user-based / cross-device experiments. See https://github.com/Alephbet/alephbet/issues/16
-* run your own tracking backend on AWS Lambda with [Gimel](https://github.com/Alephbet/gimel) (recommended)
 * Pluggable backends: event tracking (defaults to Google Universal Analytics), and storage (defaults to
   localStorage)
 * Supports multiple variants and goals
@@ -97,7 +98,7 @@ const page_views = new AlephBet.Goal('page view', {unique: false});
   - `button color | blue`, `button clicked` : unique visitors clicking on the button assigned to the `blue` variant.
   - `button color | red`, `viewed page` : count of pages viewed by all visitors (not-unique) *after* the experiment started.
 
-* **important note**: whilst Google Analytics is the *easiest* way to start playing with Alephbet, it's definitely not the best way to use it. GA starts sampling events after you reach a certain volume, and the built-in GA adapter does not support more advanced features like [cross-device tracking](https://github.com/Alephbet/alephbet/wiki/User-based-and-Cross-device-tracking). If you're serious about running A/B tests, I would urge you to consider using [Lamed](https://github.com/Alephbet/lamed), [Gimel](https://github.com/Alephbet/gimel) or another backend instead.
+* **important note**: whilst Google Analytics is the *easiest* way to start playing with Alephbet, it's definitely not the best way to use it. GA starts sampling events after you reach a certain volume, and the built-in GA adapter does not support more advanced features like [cross-device tracking](https://github.com/Alephbet/alephbet/wiki/User-based-and-Cross-device-tracking). If you're serious about running A/B tests, I would urge you to consider using [Lamed](https://github.com/Alephbet/lamed), [Alephbet-Rails](https://github.com/Alephbet/alephbet-rails) or another backend instead.
 
 ## Advanced Usage
 
@@ -217,7 +218,7 @@ if (get_user_id()) {
 Notes:
 
 * For user-based tracking, make sure you *always* have a user_id. Do not mix visitors (without an id) and users (with an id) in the same experiment.
-* Cross-device tracking only works with the [Gimel](https://github.com/Alephbet/gimel), [Lamed](https://github.com/Alephbet/lamed) or keen.io tracking backends. It does not work with Google Analytics.
+* Cross-device tracking only works with the [Lamed](https://github.com/Alephbet/lamed) or [Alephbet-Rails](https://github.com/Alephbet/alephbet-rails) tracking backends. It does not work with Google Analytics.
 
 See this [Wiki page](https://github.com/Alephbet/alephbet/wiki/User-based-and-Cross-device-tracking) for more information
 
@@ -265,15 +266,17 @@ buy_button_cta_experiment.add_goals(all_goals);
 
 ### Custom Tracking Adapter
 
-AlephBet comes with a built-in Google Analytics adapter and three, currently experimental, [adapters](../../wiki/Tips-&-Caveats#persistent-queue-adapters) with potentially better accuracy:
+AlephBet comes with a built-in Google Analytics adapter and several [adapters](../../wiki/Tips-&-Caveats#persistent-queue-adapters) with potentially better accuracy:
 
 [Persistent Queue GA Adapter](../../wiki/Tips-&-Caveats#persistentqueuegoogleanalyticsadapter)
 
 [Persistent Queue Keen Adapter](../../wiki/Tips-&-Caveats#persistentqueuekeenadapter)
 
-[Gimel](https://github.com/Alephbet/gimel) adapter
+Alephbet adapter - a generic adapter
 
 [Lamed](https://github.com/Alephbet/lamed) adapter
+
+[Gimel](https://github.com/Alephbet/gimel) adapter
 
 Creating custom adapters is however very easy.
 
